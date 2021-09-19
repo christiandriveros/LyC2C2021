@@ -1,0 +1,1187 @@
+Terminals unused in grammar
+
+   PYC
+   DOS_PUNT
+
+
+Gramática
+
+    0 $accept: inicio $end
+
+    1 inicio: programa
+
+    2 programa: sentencia
+    3         | programa sentencia
+
+    4 sentencia: dec_var
+    5          | impresion
+    6          | lectura
+    7          | condicional
+    8          | iteracion
+    9          | asignacion
+
+   10 dec_var: DIM COR_A lista_simetrica COR_C
+
+   11 lista_simetrica: ID COMA lista_simetrica COMA tipo_dato
+   12                | ID COR_C AS COR_A tipo_dato
+
+   13 tipo_dato: T_INT
+   14          | T_FLOAT
+   15          | T_STRING
+
+   16 asignacion: lista_de_asignaciones OP_ASIG expresion
+
+   17 lista_de_asignaciones: ID
+   18                      | lista_de_asignaciones OP_ASIG ID
+
+   19 impresion: DISPLAY ID
+   20          | DISPLAY constante
+
+   21 lectura: GET ID
+
+   22 condicional: IF PA condicion PC THEN programa ELSE programa ENDIF
+   23            | IF PA condicion PC THEN programa ENDIF
+
+   24 iteracion: WHILE PA condicion PC programa ENDWHILE
+
+   25 condicion: OP_NOT condicion_simple
+   26          | condicion_multiple
+   27          | condicion_simple
+
+   28 condicion_multiple: comparacion OP_AND comparacion
+   29                   | comparacion OP_OR comparacion
+
+   30 condicion_simple: comparacion
+
+   31 comparacion: expresion comparador expresion
+
+   32 comparador: OP_MEN
+   33           | OP_MAY
+   34           | OP_MEN_IG
+   35           | OP_MAY_IG
+   36           | OP_IGUAL
+   37           | OP_DIST
+
+   38 expresion: expresion OP_SUM termino
+   39          | expresion OP_RES termino
+   40          | termino
+   41          | OP_RES expresion
+
+   42 termino: termino OP_MULT factor
+   43        | termino OP_DIV factor
+   44        | factor
+
+   45 factor: PA expresion PC
+   46       | constante
+   47       | ID
+
+   48 constante: constante_num
+   49          | CTE_STRING
+
+   50 constante_num: CTE_ENT
+   51              | CTE_REAL
+
+
+Terminales con las reglas donde aparecen
+
+$end (0) 0
+error (256)
+WHILE (258) 24
+ENDWHILE (259) 24
+IF (260) 22 23
+THEN (261) 22 23
+ELSE (262) 22
+ENDIF (263) 22 23
+GET (264) 21
+DISPLAY (265) 19 20
+DIM (266) 10
+AS (267) 12
+T_INT (268) 13
+T_FLOAT (269) 14
+T_STRING (270) 15
+ID (271) 11 12 17 18 19 21 47
+CTE_STRING (272) 49
+CTE_ENT (273) 50
+CTE_REAL (274) 51
+OP_SUM (275) 38
+OP_RES (276) 39 41
+OP_MULT (277) 42
+OP_DIV (278) 43
+OP_ASIG (279) 16 18
+OP_MAY (280) 33
+OP_MAY_IG (281) 35
+OP_MEN (282) 32
+OP_MEN_IG (283) 34
+OP_IGUAL (284) 36
+OP_DIST (285) 37
+OP_AND (286) 28
+OP_OR (287) 29
+OP_NOT (288) 25
+PA (289) 22 23 24 45
+PC (290) 22 23 24 45
+PYC (291)
+COMA (292) 11
+DOS_PUNT (293)
+COR_A (294) 10 12
+COR_C (295) 10 12
+MENOS_UNARIO (296)
+
+
+No terminales con las reglas donde aparecen
+
+$accept (42)
+    en la izquierda: 0
+inicio (43)
+    en la izquierda: 1, en la derecha: 0
+programa (44)
+    en la izquierda: 2 3, en la derecha: 1 3 22 23 24
+sentencia (45)
+    en la izquierda: 4 5 6 7 8 9, en la derecha: 2 3
+dec_var (46)
+    en la izquierda: 10, en la derecha: 4
+lista_simetrica (47)
+    en la izquierda: 11 12, en la derecha: 10 11
+tipo_dato (48)
+    en la izquierda: 13 14 15, en la derecha: 11 12
+asignacion (49)
+    en la izquierda: 16, en la derecha: 9
+lista_de_asignaciones (50)
+    en la izquierda: 17 18, en la derecha: 16 18
+impresion (51)
+    en la izquierda: 19 20, en la derecha: 5
+lectura (52)
+    en la izquierda: 21, en la derecha: 6
+condicional (53)
+    en la izquierda: 22 23, en la derecha: 7
+iteracion (54)
+    en la izquierda: 24, en la derecha: 8
+condicion (55)
+    en la izquierda: 25 26 27, en la derecha: 22 23 24
+condicion_multiple (56)
+    en la izquierda: 28 29, en la derecha: 26
+condicion_simple (57)
+    en la izquierda: 30, en la derecha: 25 27
+comparacion (58)
+    en la izquierda: 31, en la derecha: 28 29 30
+comparador (59)
+    en la izquierda: 32 33 34 35 36 37, en la derecha: 31
+expresion (60)
+    en la izquierda: 38 39 40 41, en la derecha: 16 31 38 39 41 45
+termino (61)
+    en la izquierda: 42 43 44, en la derecha: 38 39 40 42 43
+factor (62)
+    en la izquierda: 45 46 47, en la derecha: 42 43 44
+constante (63)
+    en la izquierda: 48 49, en la derecha: 20 46
+constante_num (64)
+    en la izquierda: 50 51, en la derecha: 48
+
+
+estado 0
+
+    0 $accept: . inicio $end
+
+    WHILE    desplazar e ir al estado 1
+    IF       desplazar e ir al estado 2
+    GET      desplazar e ir al estado 3
+    DISPLAY  desplazar e ir al estado 4
+    DIM      desplazar e ir al estado 5
+    ID       desplazar e ir al estado 6
+
+    inicio                 ir al estado 7
+    programa               ir al estado 8
+    sentencia              ir al estado 9
+    dec_var                ir al estado 10
+    asignacion             ir al estado 11
+    lista_de_asignaciones  ir al estado 12
+    impresion              ir al estado 13
+    lectura                ir al estado 14
+    condicional            ir al estado 15
+    iteracion              ir al estado 16
+
+
+estado 1
+
+   24 iteracion: WHILE . PA condicion PC programa ENDWHILE
+
+    PA  desplazar e ir al estado 17
+
+
+estado 2
+
+   22 condicional: IF . PA condicion PC THEN programa ELSE programa ENDIF
+   23            | IF . PA condicion PC THEN programa ENDIF
+
+    PA  desplazar e ir al estado 18
+
+
+estado 3
+
+   21 lectura: GET . ID
+
+    ID  desplazar e ir al estado 19
+
+
+estado 4
+
+   19 impresion: DISPLAY . ID
+   20          | DISPLAY . constante
+
+    ID          desplazar e ir al estado 20
+    CTE_STRING  desplazar e ir al estado 21
+    CTE_ENT     desplazar e ir al estado 22
+    CTE_REAL    desplazar e ir al estado 23
+
+    constante      ir al estado 24
+    constante_num  ir al estado 25
+
+
+estado 5
+
+   10 dec_var: DIM . COR_A lista_simetrica COR_C
+
+    COR_A  desplazar e ir al estado 26
+
+
+estado 6
+
+   17 lista_de_asignaciones: ID .
+
+    $default  reduce usando la regla 17 (lista_de_asignaciones)
+
+
+estado 7
+
+    0 $accept: inicio . $end
+
+    $end  desplazar e ir al estado 27
+
+
+estado 8
+
+    1 inicio: programa .
+    3 programa: programa . sentencia
+
+    WHILE    desplazar e ir al estado 1
+    IF       desplazar e ir al estado 2
+    GET      desplazar e ir al estado 3
+    DISPLAY  desplazar e ir al estado 4
+    DIM      desplazar e ir al estado 5
+    ID       desplazar e ir al estado 6
+
+    $default  reduce usando la regla 1 (inicio)
+
+    sentencia              ir al estado 28
+    dec_var                ir al estado 10
+    asignacion             ir al estado 11
+    lista_de_asignaciones  ir al estado 12
+    impresion              ir al estado 13
+    lectura                ir al estado 14
+    condicional            ir al estado 15
+    iteracion              ir al estado 16
+
+
+estado 9
+
+    2 programa: sentencia .
+
+    $default  reduce usando la regla 2 (programa)
+
+
+estado 10
+
+    4 sentencia: dec_var .
+
+    $default  reduce usando la regla 4 (sentencia)
+
+
+estado 11
+
+    9 sentencia: asignacion .
+
+    $default  reduce usando la regla 9 (sentencia)
+
+
+estado 12
+
+   16 asignacion: lista_de_asignaciones . OP_ASIG expresion
+   18 lista_de_asignaciones: lista_de_asignaciones . OP_ASIG ID
+
+    OP_ASIG  desplazar e ir al estado 29
+
+
+estado 13
+
+    5 sentencia: impresion .
+
+    $default  reduce usando la regla 5 (sentencia)
+
+
+estado 14
+
+    6 sentencia: lectura .
+
+    $default  reduce usando la regla 6 (sentencia)
+
+
+estado 15
+
+    7 sentencia: condicional .
+
+    $default  reduce usando la regla 7 (sentencia)
+
+
+estado 16
+
+    8 sentencia: iteracion .
+
+    $default  reduce usando la regla 8 (sentencia)
+
+
+estado 17
+
+   24 iteracion: WHILE PA . condicion PC programa ENDWHILE
+
+    ID          desplazar e ir al estado 30
+    CTE_STRING  desplazar e ir al estado 21
+    CTE_ENT     desplazar e ir al estado 22
+    CTE_REAL    desplazar e ir al estado 23
+    OP_RES      desplazar e ir al estado 31
+    OP_NOT      desplazar e ir al estado 32
+    PA          desplazar e ir al estado 33
+
+    condicion           ir al estado 34
+    condicion_multiple  ir al estado 35
+    condicion_simple    ir al estado 36
+    comparacion         ir al estado 37
+    expresion           ir al estado 38
+    termino             ir al estado 39
+    factor              ir al estado 40
+    constante           ir al estado 41
+    constante_num       ir al estado 25
+
+
+estado 18
+
+   22 condicional: IF PA . condicion PC THEN programa ELSE programa ENDIF
+   23            | IF PA . condicion PC THEN programa ENDIF
+
+    ID          desplazar e ir al estado 30
+    CTE_STRING  desplazar e ir al estado 21
+    CTE_ENT     desplazar e ir al estado 22
+    CTE_REAL    desplazar e ir al estado 23
+    OP_RES      desplazar e ir al estado 31
+    OP_NOT      desplazar e ir al estado 32
+    PA          desplazar e ir al estado 33
+
+    condicion           ir al estado 42
+    condicion_multiple  ir al estado 35
+    condicion_simple    ir al estado 36
+    comparacion         ir al estado 37
+    expresion           ir al estado 38
+    termino             ir al estado 39
+    factor              ir al estado 40
+    constante           ir al estado 41
+    constante_num       ir al estado 25
+
+
+estado 19
+
+   21 lectura: GET ID .
+
+    $default  reduce usando la regla 21 (lectura)
+
+
+estado 20
+
+   19 impresion: DISPLAY ID .
+
+    $default  reduce usando la regla 19 (impresion)
+
+
+estado 21
+
+   49 constante: CTE_STRING .
+
+    $default  reduce usando la regla 49 (constante)
+
+
+estado 22
+
+   50 constante_num: CTE_ENT .
+
+    $default  reduce usando la regla 50 (constante_num)
+
+
+estado 23
+
+   51 constante_num: CTE_REAL .
+
+    $default  reduce usando la regla 51 (constante_num)
+
+
+estado 24
+
+   20 impresion: DISPLAY constante .
+
+    $default  reduce usando la regla 20 (impresion)
+
+
+estado 25
+
+   48 constante: constante_num .
+
+    $default  reduce usando la regla 48 (constante)
+
+
+estado 26
+
+   10 dec_var: DIM COR_A . lista_simetrica COR_C
+
+    ID  desplazar e ir al estado 43
+
+    lista_simetrica  ir al estado 44
+
+
+estado 27
+
+    0 $accept: inicio $end .
+
+    $default  aceptar
+
+
+estado 28
+
+    3 programa: programa sentencia .
+
+    $default  reduce usando la regla 3 (programa)
+
+
+estado 29
+
+   16 asignacion: lista_de_asignaciones OP_ASIG . expresion
+   18 lista_de_asignaciones: lista_de_asignaciones OP_ASIG . ID
+
+    ID          desplazar e ir al estado 45
+    CTE_STRING  desplazar e ir al estado 21
+    CTE_ENT     desplazar e ir al estado 22
+    CTE_REAL    desplazar e ir al estado 23
+    OP_RES      desplazar e ir al estado 31
+    PA          desplazar e ir al estado 33
+
+    expresion      ir al estado 46
+    termino        ir al estado 39
+    factor         ir al estado 40
+    constante      ir al estado 41
+    constante_num  ir al estado 25
+
+
+estado 30
+
+   47 factor: ID .
+
+    $default  reduce usando la regla 47 (factor)
+
+
+estado 31
+
+   41 expresion: OP_RES . expresion
+
+    ID          desplazar e ir al estado 30
+    CTE_STRING  desplazar e ir al estado 21
+    CTE_ENT     desplazar e ir al estado 22
+    CTE_REAL    desplazar e ir al estado 23
+    OP_RES      desplazar e ir al estado 31
+    PA          desplazar e ir al estado 33
+
+    expresion      ir al estado 47
+    termino        ir al estado 39
+    factor         ir al estado 40
+    constante      ir al estado 41
+    constante_num  ir al estado 25
+
+
+estado 32
+
+   25 condicion: OP_NOT . condicion_simple
+
+    ID          desplazar e ir al estado 30
+    CTE_STRING  desplazar e ir al estado 21
+    CTE_ENT     desplazar e ir al estado 22
+    CTE_REAL    desplazar e ir al estado 23
+    OP_RES      desplazar e ir al estado 31
+    PA          desplazar e ir al estado 33
+
+    condicion_simple  ir al estado 48
+    comparacion       ir al estado 49
+    expresion         ir al estado 38
+    termino           ir al estado 39
+    factor            ir al estado 40
+    constante         ir al estado 41
+    constante_num     ir al estado 25
+
+
+estado 33
+
+   45 factor: PA . expresion PC
+
+    ID          desplazar e ir al estado 30
+    CTE_STRING  desplazar e ir al estado 21
+    CTE_ENT     desplazar e ir al estado 22
+    CTE_REAL    desplazar e ir al estado 23
+    OP_RES      desplazar e ir al estado 31
+    PA          desplazar e ir al estado 33
+
+    expresion      ir al estado 50
+    termino        ir al estado 39
+    factor         ir al estado 40
+    constante      ir al estado 41
+    constante_num  ir al estado 25
+
+
+estado 34
+
+   24 iteracion: WHILE PA condicion . PC programa ENDWHILE
+
+    PC  desplazar e ir al estado 51
+
+
+estado 35
+
+   26 condicion: condicion_multiple .
+
+    $default  reduce usando la regla 26 (condicion)
+
+
+estado 36
+
+   27 condicion: condicion_simple .
+
+    $default  reduce usando la regla 27 (condicion)
+
+
+estado 37
+
+   28 condicion_multiple: comparacion . OP_AND comparacion
+   29                   | comparacion . OP_OR comparacion
+   30 condicion_simple: comparacion .
+
+    OP_AND  desplazar e ir al estado 52
+    OP_OR   desplazar e ir al estado 53
+
+    $default  reduce usando la regla 30 (condicion_simple)
+
+
+estado 38
+
+   31 comparacion: expresion . comparador expresion
+   38 expresion: expresion . OP_SUM termino
+   39          | expresion . OP_RES termino
+
+    OP_SUM     desplazar e ir al estado 54
+    OP_RES     desplazar e ir al estado 55
+    OP_MAY     desplazar e ir al estado 56
+    OP_MAY_IG  desplazar e ir al estado 57
+    OP_MEN     desplazar e ir al estado 58
+    OP_MEN_IG  desplazar e ir al estado 59
+    OP_IGUAL   desplazar e ir al estado 60
+    OP_DIST    desplazar e ir al estado 61
+
+    comparador  ir al estado 62
+
+
+estado 39
+
+   40 expresion: termino .
+   42 termino: termino . OP_MULT factor
+   43        | termino . OP_DIV factor
+
+    OP_MULT  desplazar e ir al estado 63
+    OP_DIV   desplazar e ir al estado 64
+
+    $default  reduce usando la regla 40 (expresion)
+
+
+estado 40
+
+   44 termino: factor .
+
+    $default  reduce usando la regla 44 (termino)
+
+
+estado 41
+
+   46 factor: constante .
+
+    $default  reduce usando la regla 46 (factor)
+
+
+estado 42
+
+   22 condicional: IF PA condicion . PC THEN programa ELSE programa ENDIF
+   23            | IF PA condicion . PC THEN programa ENDIF
+
+    PC  desplazar e ir al estado 65
+
+
+estado 43
+
+   11 lista_simetrica: ID . COMA lista_simetrica COMA tipo_dato
+   12                | ID . COR_C AS COR_A tipo_dato
+
+    COMA   desplazar e ir al estado 66
+    COR_C  desplazar e ir al estado 67
+
+
+estado 44
+
+   10 dec_var: DIM COR_A lista_simetrica . COR_C
+
+    COR_C  desplazar e ir al estado 68
+
+
+estado 45
+
+   18 lista_de_asignaciones: lista_de_asignaciones OP_ASIG ID .
+   47 factor: ID .
+
+    OP_ASIG   reduce usando la regla 18 (lista_de_asignaciones)
+    $default  reduce usando la regla 47 (factor)
+
+
+estado 46
+
+   16 asignacion: lista_de_asignaciones OP_ASIG expresion .
+   38 expresion: expresion . OP_SUM termino
+   39          | expresion . OP_RES termino
+
+    OP_SUM  desplazar e ir al estado 54
+    OP_RES  desplazar e ir al estado 55
+
+    $default  reduce usando la regla 16 (asignacion)
+
+
+estado 47
+
+   38 expresion: expresion . OP_SUM termino
+   39          | expresion . OP_RES termino
+   41          | OP_RES expresion .
+
+    $default  reduce usando la regla 41 (expresion)
+
+
+estado 48
+
+   25 condicion: OP_NOT condicion_simple .
+
+    $default  reduce usando la regla 25 (condicion)
+
+
+estado 49
+
+   30 condicion_simple: comparacion .
+
+    $default  reduce usando la regla 30 (condicion_simple)
+
+
+estado 50
+
+   38 expresion: expresion . OP_SUM termino
+   39          | expresion . OP_RES termino
+   45 factor: PA expresion . PC
+
+    OP_SUM  desplazar e ir al estado 54
+    OP_RES  desplazar e ir al estado 55
+    PC      desplazar e ir al estado 69
+
+
+estado 51
+
+   24 iteracion: WHILE PA condicion PC . programa ENDWHILE
+
+    WHILE    desplazar e ir al estado 1
+    IF       desplazar e ir al estado 2
+    GET      desplazar e ir al estado 3
+    DISPLAY  desplazar e ir al estado 4
+    DIM      desplazar e ir al estado 5
+    ID       desplazar e ir al estado 6
+
+    programa               ir al estado 70
+    sentencia              ir al estado 9
+    dec_var                ir al estado 10
+    asignacion             ir al estado 11
+    lista_de_asignaciones  ir al estado 12
+    impresion              ir al estado 13
+    lectura                ir al estado 14
+    condicional            ir al estado 15
+    iteracion              ir al estado 16
+
+
+estado 52
+
+   28 condicion_multiple: comparacion OP_AND . comparacion
+
+    ID          desplazar e ir al estado 30
+    CTE_STRING  desplazar e ir al estado 21
+    CTE_ENT     desplazar e ir al estado 22
+    CTE_REAL    desplazar e ir al estado 23
+    OP_RES      desplazar e ir al estado 31
+    PA          desplazar e ir al estado 33
+
+    comparacion    ir al estado 71
+    expresion      ir al estado 38
+    termino        ir al estado 39
+    factor         ir al estado 40
+    constante      ir al estado 41
+    constante_num  ir al estado 25
+
+
+estado 53
+
+   29 condicion_multiple: comparacion OP_OR . comparacion
+
+    ID          desplazar e ir al estado 30
+    CTE_STRING  desplazar e ir al estado 21
+    CTE_ENT     desplazar e ir al estado 22
+    CTE_REAL    desplazar e ir al estado 23
+    OP_RES      desplazar e ir al estado 31
+    PA          desplazar e ir al estado 33
+
+    comparacion    ir al estado 72
+    expresion      ir al estado 38
+    termino        ir al estado 39
+    factor         ir al estado 40
+    constante      ir al estado 41
+    constante_num  ir al estado 25
+
+
+estado 54
+
+   38 expresion: expresion OP_SUM . termino
+
+    ID          desplazar e ir al estado 30
+    CTE_STRING  desplazar e ir al estado 21
+    CTE_ENT     desplazar e ir al estado 22
+    CTE_REAL    desplazar e ir al estado 23
+    PA          desplazar e ir al estado 33
+
+    termino        ir al estado 73
+    factor         ir al estado 40
+    constante      ir al estado 41
+    constante_num  ir al estado 25
+
+
+estado 55
+
+   39 expresion: expresion OP_RES . termino
+
+    ID          desplazar e ir al estado 30
+    CTE_STRING  desplazar e ir al estado 21
+    CTE_ENT     desplazar e ir al estado 22
+    CTE_REAL    desplazar e ir al estado 23
+    PA          desplazar e ir al estado 33
+
+    termino        ir al estado 74
+    factor         ir al estado 40
+    constante      ir al estado 41
+    constante_num  ir al estado 25
+
+
+estado 56
+
+   33 comparador: OP_MAY .
+
+    $default  reduce usando la regla 33 (comparador)
+
+
+estado 57
+
+   35 comparador: OP_MAY_IG .
+
+    $default  reduce usando la regla 35 (comparador)
+
+
+estado 58
+
+   32 comparador: OP_MEN .
+
+    $default  reduce usando la regla 32 (comparador)
+
+
+estado 59
+
+   34 comparador: OP_MEN_IG .
+
+    $default  reduce usando la regla 34 (comparador)
+
+
+estado 60
+
+   36 comparador: OP_IGUAL .
+
+    $default  reduce usando la regla 36 (comparador)
+
+
+estado 61
+
+   37 comparador: OP_DIST .
+
+    $default  reduce usando la regla 37 (comparador)
+
+
+estado 62
+
+   31 comparacion: expresion comparador . expresion
+
+    ID          desplazar e ir al estado 30
+    CTE_STRING  desplazar e ir al estado 21
+    CTE_ENT     desplazar e ir al estado 22
+    CTE_REAL    desplazar e ir al estado 23
+    OP_RES      desplazar e ir al estado 31
+    PA          desplazar e ir al estado 33
+
+    expresion      ir al estado 75
+    termino        ir al estado 39
+    factor         ir al estado 40
+    constante      ir al estado 41
+    constante_num  ir al estado 25
+
+
+estado 63
+
+   42 termino: termino OP_MULT . factor
+
+    ID          desplazar e ir al estado 30
+    CTE_STRING  desplazar e ir al estado 21
+    CTE_ENT     desplazar e ir al estado 22
+    CTE_REAL    desplazar e ir al estado 23
+    PA          desplazar e ir al estado 33
+
+    factor         ir al estado 76
+    constante      ir al estado 41
+    constante_num  ir al estado 25
+
+
+estado 64
+
+   43 termino: termino OP_DIV . factor
+
+    ID          desplazar e ir al estado 30
+    CTE_STRING  desplazar e ir al estado 21
+    CTE_ENT     desplazar e ir al estado 22
+    CTE_REAL    desplazar e ir al estado 23
+    PA          desplazar e ir al estado 33
+
+    factor         ir al estado 77
+    constante      ir al estado 41
+    constante_num  ir al estado 25
+
+
+estado 65
+
+   22 condicional: IF PA condicion PC . THEN programa ELSE programa ENDIF
+   23            | IF PA condicion PC . THEN programa ENDIF
+
+    THEN  desplazar e ir al estado 78
+
+
+estado 66
+
+   11 lista_simetrica: ID COMA . lista_simetrica COMA tipo_dato
+
+    ID  desplazar e ir al estado 43
+
+    lista_simetrica  ir al estado 79
+
+
+estado 67
+
+   12 lista_simetrica: ID COR_C . AS COR_A tipo_dato
+
+    AS  desplazar e ir al estado 80
+
+
+estado 68
+
+   10 dec_var: DIM COR_A lista_simetrica COR_C .
+
+    $default  reduce usando la regla 10 (dec_var)
+
+
+estado 69
+
+   45 factor: PA expresion PC .
+
+    $default  reduce usando la regla 45 (factor)
+
+
+estado 70
+
+    3 programa: programa . sentencia
+   24 iteracion: WHILE PA condicion PC programa . ENDWHILE
+
+    WHILE     desplazar e ir al estado 1
+    ENDWHILE  desplazar e ir al estado 81
+    IF        desplazar e ir al estado 2
+    GET       desplazar e ir al estado 3
+    DISPLAY   desplazar e ir al estado 4
+    DIM       desplazar e ir al estado 5
+    ID        desplazar e ir al estado 6
+
+    sentencia              ir al estado 28
+    dec_var                ir al estado 10
+    asignacion             ir al estado 11
+    lista_de_asignaciones  ir al estado 12
+    impresion              ir al estado 13
+    lectura                ir al estado 14
+    condicional            ir al estado 15
+    iteracion              ir al estado 16
+
+
+estado 71
+
+   28 condicion_multiple: comparacion OP_AND comparacion .
+
+    $default  reduce usando la regla 28 (condicion_multiple)
+
+
+estado 72
+
+   29 condicion_multiple: comparacion OP_OR comparacion .
+
+    $default  reduce usando la regla 29 (condicion_multiple)
+
+
+estado 73
+
+   38 expresion: expresion OP_SUM termino .
+   42 termino: termino . OP_MULT factor
+   43        | termino . OP_DIV factor
+
+    OP_MULT  desplazar e ir al estado 63
+    OP_DIV   desplazar e ir al estado 64
+
+    $default  reduce usando la regla 38 (expresion)
+
+
+estado 74
+
+   39 expresion: expresion OP_RES termino .
+   42 termino: termino . OP_MULT factor
+   43        | termino . OP_DIV factor
+
+    OP_MULT  desplazar e ir al estado 63
+    OP_DIV   desplazar e ir al estado 64
+
+    $default  reduce usando la regla 39 (expresion)
+
+
+estado 75
+
+   31 comparacion: expresion comparador expresion .
+   38 expresion: expresion . OP_SUM termino
+   39          | expresion . OP_RES termino
+
+    OP_SUM  desplazar e ir al estado 54
+    OP_RES  desplazar e ir al estado 55
+
+    $default  reduce usando la regla 31 (comparacion)
+
+
+estado 76
+
+   42 termino: termino OP_MULT factor .
+
+    $default  reduce usando la regla 42 (termino)
+
+
+estado 77
+
+   43 termino: termino OP_DIV factor .
+
+    $default  reduce usando la regla 43 (termino)
+
+
+estado 78
+
+   22 condicional: IF PA condicion PC THEN . programa ELSE programa ENDIF
+   23            | IF PA condicion PC THEN . programa ENDIF
+
+    WHILE    desplazar e ir al estado 1
+    IF       desplazar e ir al estado 2
+    GET      desplazar e ir al estado 3
+    DISPLAY  desplazar e ir al estado 4
+    DIM      desplazar e ir al estado 5
+    ID       desplazar e ir al estado 6
+
+    programa               ir al estado 82
+    sentencia              ir al estado 9
+    dec_var                ir al estado 10
+    asignacion             ir al estado 11
+    lista_de_asignaciones  ir al estado 12
+    impresion              ir al estado 13
+    lectura                ir al estado 14
+    condicional            ir al estado 15
+    iteracion              ir al estado 16
+
+
+estado 79
+
+   11 lista_simetrica: ID COMA lista_simetrica . COMA tipo_dato
+
+    COMA  desplazar e ir al estado 83
+
+
+estado 80
+
+   12 lista_simetrica: ID COR_C AS . COR_A tipo_dato
+
+    COR_A  desplazar e ir al estado 84
+
+
+estado 81
+
+   24 iteracion: WHILE PA condicion PC programa ENDWHILE .
+
+    $default  reduce usando la regla 24 (iteracion)
+
+
+estado 82
+
+    3 programa: programa . sentencia
+   22 condicional: IF PA condicion PC THEN programa . ELSE programa ENDIF
+   23            | IF PA condicion PC THEN programa . ENDIF
+
+    WHILE    desplazar e ir al estado 1
+    IF       desplazar e ir al estado 2
+    ELSE     desplazar e ir al estado 85
+    ENDIF    desplazar e ir al estado 86
+    GET      desplazar e ir al estado 3
+    DISPLAY  desplazar e ir al estado 4
+    DIM      desplazar e ir al estado 5
+    ID       desplazar e ir al estado 6
+
+    sentencia              ir al estado 28
+    dec_var                ir al estado 10
+    asignacion             ir al estado 11
+    lista_de_asignaciones  ir al estado 12
+    impresion              ir al estado 13
+    lectura                ir al estado 14
+    condicional            ir al estado 15
+    iteracion              ir al estado 16
+
+
+estado 83
+
+   11 lista_simetrica: ID COMA lista_simetrica COMA . tipo_dato
+
+    T_INT     desplazar e ir al estado 87
+    T_FLOAT   desplazar e ir al estado 88
+    T_STRING  desplazar e ir al estado 89
+
+    tipo_dato  ir al estado 90
+
+
+estado 84
+
+   12 lista_simetrica: ID COR_C AS COR_A . tipo_dato
+
+    T_INT     desplazar e ir al estado 87
+    T_FLOAT   desplazar e ir al estado 88
+    T_STRING  desplazar e ir al estado 89
+
+    tipo_dato  ir al estado 91
+
+
+estado 85
+
+   22 condicional: IF PA condicion PC THEN programa ELSE . programa ENDIF
+
+    WHILE    desplazar e ir al estado 1
+    IF       desplazar e ir al estado 2
+    GET      desplazar e ir al estado 3
+    DISPLAY  desplazar e ir al estado 4
+    DIM      desplazar e ir al estado 5
+    ID       desplazar e ir al estado 6
+
+    programa               ir al estado 92
+    sentencia              ir al estado 9
+    dec_var                ir al estado 10
+    asignacion             ir al estado 11
+    lista_de_asignaciones  ir al estado 12
+    impresion              ir al estado 13
+    lectura                ir al estado 14
+    condicional            ir al estado 15
+    iteracion              ir al estado 16
+
+
+estado 86
+
+   23 condicional: IF PA condicion PC THEN programa ENDIF .
+
+    $default  reduce usando la regla 23 (condicional)
+
+
+estado 87
+
+   13 tipo_dato: T_INT .
+
+    $default  reduce usando la regla 13 (tipo_dato)
+
+
+estado 88
+
+   14 tipo_dato: T_FLOAT .
+
+    $default  reduce usando la regla 14 (tipo_dato)
+
+
+estado 89
+
+   15 tipo_dato: T_STRING .
+
+    $default  reduce usando la regla 15 (tipo_dato)
+
+
+estado 90
+
+   11 lista_simetrica: ID COMA lista_simetrica COMA tipo_dato .
+
+    $default  reduce usando la regla 11 (lista_simetrica)
+
+
+estado 91
+
+   12 lista_simetrica: ID COR_C AS COR_A tipo_dato .
+
+    $default  reduce usando la regla 12 (lista_simetrica)
+
+
+estado 92
+
+    3 programa: programa . sentencia
+   22 condicional: IF PA condicion PC THEN programa ELSE programa . ENDIF
+
+    WHILE    desplazar e ir al estado 1
+    IF       desplazar e ir al estado 2
+    ENDIF    desplazar e ir al estado 93
+    GET      desplazar e ir al estado 3
+    DISPLAY  desplazar e ir al estado 4
+    DIM      desplazar e ir al estado 5
+    ID       desplazar e ir al estado 6
+
+    sentencia              ir al estado 28
+    dec_var                ir al estado 10
+    asignacion             ir al estado 11
+    lista_de_asignaciones  ir al estado 12
+    impresion              ir al estado 13
+    lectura                ir al estado 14
+    condicional            ir al estado 15
+    iteracion              ir al estado 16
+
+
+estado 93
+
+   22 condicional: IF PA condicion PC THEN programa ELSE programa ENDIF .
+
+    $default  reduce usando la regla 22 (condicional)

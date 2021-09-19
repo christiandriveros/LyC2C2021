@@ -1,0 +1,147 @@
+*/ PRUEBAS ITERACIONES /*
+
+
+WHILE ( 7 > -5 )
+a:=0
+ENDWHILE
+
+*/ PRUEBAS DECISIONES Y CONDICIONES/*
+
+*/IF/*
+
+IF ( 1 > 2 )
+THEN
+c:=3
+ENDIF
+
+*/IF CON ELSE/*
+
+IF ( 1 > 2 )
+THEN
+c:=4
+ELSE
+d:= 5
+ENDIF
+
+*/ CONDICIONES VARIAS /*
+
+IF ( var_a <= varb )
+THEN
+var:=4
+ENDIF
+
+IF ( var_a == varb )
+THEN
+var:=3
+ENDIF
+
+IF ( var_a < varb )
+THEN
+var:=3
+ENDIF
+
+IF ( var_a > varb )
+THEN
+var:=1
+ENDIF
+
+IF ( var_a >= varb )
+THEN
+var:=2
+ENDIF
+
+
+IF ( var_a <> varb )
+THEN
+var:=5
+ENDIF
+
+*/ PRUEBA COMPARACION DOBLE SIMPLE Y OPERADORES AND Y OR /*
+
+IF ( var_a > varb AND var_c<var_d )
+THEN
+var:=1
+ENDIF
+
+IF ( var_a > varb OR var_c<var_d )
+THEN
+var:=2
+ENDIF
+
+IF ( NOT var_a > varb )
+THEN
+var:=3
+ENDIF
+
+*/ DESCOMENTAR PARA PROBAR ERROR HACIENDO TRIPLE COMPARACION /*
+*/IF ( var_a > varb AND var_c<var_d var_c==var_d )/*
+*/THEN/*
+*/var:=4/*
+*/ENDIF/*
+
+
+
+
+*/ PRUEBAS TIPOS DE DATO /*
+
+*/ CONSTANTE NUMERICA ENTERA /*  
+var_numEnt:= 32767
+
+*/ DESCOMENTAR PARA PROBAR EXCESO EN EL LIMITE/*
+*/var_numEnt:= 32768 /*
+
+*/ DESCOMENTAR PARA PROBAR EXCESO EN LONGITUD MAXIMA DE ID: 30/*
+*/ abcdefghijklmnopqrstuvwxyz12344 := 8 /*
+
+*/ CONSTANTE NUMERICA REALES /*
+
+var_numReal1:= -11.11
+var_numReal2:= 09.
+var_numReal3:= .90
+
+
+*/ CONSTANTE STRING /*
+
+*/ PRUEBA CON STRING DE 30 CHAR /*
+
+var_string1 := "ur21v  .3A567@a(-,zjt 1xd%df g"
+
+*/ DESCOMENTAR PARA PROBAR ERROR DE ASIGNACION CON STRING DE 31 CARACTERES /*
+*/ var_string1:= "ur21v  .3A567@a(-,zjt 1xd%df g4"/*
+
+
+*/ PRUEBA DISPLAY Y GET/*
+
+DISPLAY "ewr"
+DISPLAY var1
+GET base
+
+
+*/ PRUEBA DECLARACION DE VARIABLES /*
+
+
+DIM [ var1, var2, svar3 ] AS [ FLOAT, INT, string]
+DIM [ svar ] AS [string]
+
+
+*/ PRUEBA ASIGNACION MULTIPLE /*
+
+var1:= var2:= varZ:= variable:= varR:= (10*55+2) 
+
+
+*/ PRUEBA DE CICLOS Y SELECCIONES ANIDADOS /*
+
+IF( var1> var2)
+THEN
+	WHILE( var1 > 1)
+		var2:= varZ-2
+		IF( variable> 8)
+		THEN
+			varR:= varR-7
+		ENDIF
+	ENDWHILE
+ENDIF
+
+
+*/ PRUEBA COMENTARIO /*
+*/ PRUEBA COMENTARIO ANIDADO  */ COMENTARIO ANIDADO  /*  /*
