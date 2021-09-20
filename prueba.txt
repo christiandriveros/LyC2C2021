@@ -1,3 +1,27 @@
+*/PRUEBA TEMAS ESPECIALES: EQUMAX, EQUMIN, LONGITUD /*
+
+*/ PRUEBA LONGITUD /*
+
+ab:=s:=d:=q:=we:=r := long ([x,y,z]) +3
+r := long ([x,y,z]) +3
+r := long ([x,y,z]) 
+
+*/ PRUEBA EQUMAX Y EQUMIN/*
+
+IF( EQUMAX(10; [100, 111, var1] ) )
+THEN
+resultado:= "verdadero"
+ENDIF
+
+
+IF( EQUMAX(10; [100, 111, var1] ) )
+THEN
+resultado:= "verdadero"
+ELSE
+resultado:= "falso"
+ENDIF
+
+
 */ PRUEBAS ITERACIONES /*
 
 
@@ -8,6 +32,12 @@ ENDWHILE
 */ PRUEBAS DECISIONES Y CONDICIONES/*
 
 */IF/*
+
+IF (a <= 30)
+THEN
+b := "correcto" */ asignación string /*
+ENDIF
+
 
 IF ( 1 > 2 )
 THEN
@@ -145,3 +175,4 @@ ENDIF
 
 */ PRUEBA COMENTARIO /*
 */ PRUEBA COMENTARIO ANIDADO  */ COMENTARIO ANIDADO  /*  /*
+

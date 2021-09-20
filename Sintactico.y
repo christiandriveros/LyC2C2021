@@ -23,6 +23,9 @@ void borrar_tabla_simbolos();
 %token T_INT
 %token T_FLOAT
 %token T_STRING
+%token EQUMAX
+%token EQUMIN
+%token LONG
 
 /// VARIABLES Y CTES
 %token ID
@@ -83,8 +86,9 @@ sentencia:		dec_var						{ printf("\n<sentencia> -> <declaracion de variables>")
 				| condicional 									{ printf("\n<sentencia> -> <condicional>"); }
 				| iteracion 									{ printf("\n<sentencia> -> <iteracion>"); }
 				| asignacion  									{ printf("\n<sentencia> -> <asignacion>"); }
-				
 ;
+
+
 
 dec_var:	DIM COR_A lista_simetrica COR_C				  	{ printf("\n<dec_var> -> DIM COR_A <lista_simetrica> COR_C"); }
 ;
@@ -118,6 +122,26 @@ lectura:		GET ID 													{ printf("\n<lectura> -> GET ID"); }
 condicional:		IF PA condicion PC THEN programa ELSE  programa ENDIF 		{ printf("\n<condicional> -> IF( <condicion> )THEN <programa> ELSE <programa> ENDIF "); }
 ;
 
+condicional:		IF PA equ PC THEN programa ENDIF 						{ printf("\n<condicional> -> IF( <equ> ) THEN <programa> ENDIF"); }
+;
+
+condicional:		IF PA equ PC THEN programa ELSE  programa ENDIF 		{ printf("\n<condicional> -> IF( <equ> )THEN <programa> ELSE <programa> ENDIF "); }
+;
+
+equ: EQUMAX PA expresion PYC COR_A lista_factores COR_C PC				{ printf("\n<equ> -> EQUMAX PA expresion PYC COR_A lista_factores COR_C PC"); }
+;
+equ: EQUMIN PA expresion PYC COR_A lista_factores COR_C PC				{ printf("\n<equ> -> EQUMIN PA expresion PYC COR_A lista_factores COR_C PC"); }
+;
+
+lista_factores: equfactor									{ printf("\n<lista_factores> -> <equfactor> "); }
+				| lista_factores COMA equfactor				{ printf("\n<lista_factores> -> <lista_factores> COMA <equfactor> "); }
+;
+
+equfactor:		constante_num 									{ printf("\n<equfactor> -> <constante_num> "); }
+				| ID 											{ printf("\n<equfactor> -> ID "); }
+;
+
+
 condicional:		IF PA condicion PC THEN programa ENDIF 						{ printf("\n<condicional> -> IF( <condicion>) THEN <programa> ENDIF"); }
 ;
 
@@ -147,13 +171,19 @@ comparador:		OP_MEN 											{ printf("\n<comparador> -> <"); }
 				|OP_DIST										{ printf("\n<comparador> -> !="); }
 ;
 
+
 expresion:		expresion OP_SUM termino  						{ printf("\n<expresion> -> <expresion> + <termino>"); }
 				| expresion OP_RES termino 						{ printf("\n<expresion> -> <expresion> - <termino>"); }
 				| termino 										{ printf("\n<expresion> -> <termino>"); }
+				| LONG PA COR_A lista_id COR_C PC				{ printf("\n<expresion> -> LONG PA COR_A <lista_id> COR_C PC"); }
 ;
 
 expresion: 		OP_RES expresion  %prec MENOS_UNARIO 			{ printf("\n<expresion> -> OP_RES <expresion>"); }
-;
+; 					
+
+lista_id: 	ID												{ printf("\n<lista_id> -> ID"); }
+			|lista_id COMA ID 								{ printf("\n<lista_id> -> lista_id COMA ID"); }
+
 
 termino:		termino OP_MULT factor 							{ printf("\n<termino> -> <termino> * <factor>"); }
 				| termino OP_DIV factor 						{ printf("\n<termino> -> <termino> / <factor>"); }
@@ -161,7 +191,7 @@ termino:		termino OP_MULT factor 							{ printf("\n<termino> -> <termino> * <fa
 ;
 
 factor:			PA expresion PC  								{ printf("\n<factor> -> ( <expresion> )"); }
-				| constante 									{ printf("\n<factor> -> <constante> "); }
+				| constante 									{ printf("\n<factor> -> constante "); }
 				| ID 											{ printf("\n<factor> -> ID "); }
 				
 ;
@@ -175,6 +205,7 @@ constante:		constante_num   		{ printf("\n<constante> -> <constante_num>"); }
 constante_num:	CTE_ENT   			{ printf("\n<constante_num> -> CTE_ENT"); }
 				| CTE_REAL			{ printf("\n<constante_num> -> CTE_REAL"); }
 ;
+
 
 
 %%

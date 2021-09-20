@@ -1,6 +1,5 @@
 Terminals unused in grammar
 
-   PYC
    DOS_PUNT
 
 
@@ -40,58 +39,74 @@ Gramática
    21 lectura: GET ID
 
    22 condicional: IF PA condicion PC THEN programa ELSE programa ENDIF
-   23            | IF PA condicion PC THEN programa ENDIF
+   23            | IF PA equ PC THEN programa ENDIF
+   24            | IF PA equ PC THEN programa ELSE programa ENDIF
 
-   24 iteracion: WHILE PA condicion PC programa ENDWHILE
+   25 equ: EQUMAX PA expresion PYC COR_A lista_factores COR_C PC
+   26    | EQUMIN PA expresion PYC COR_A lista_factores COR_C PC
 
-   25 condicion: OP_NOT condicion_simple
-   26          | condicion_multiple
-   27          | condicion_simple
+   27 lista_factores: equfactor
+   28               | lista_factores COMA equfactor
 
-   28 condicion_multiple: comparacion OP_AND comparacion
-   29                   | comparacion OP_OR comparacion
+   29 equfactor: constante_num
+   30          | ID
 
-   30 condicion_simple: comparacion
+   31 condicional: IF PA condicion PC THEN programa ENDIF
 
-   31 comparacion: expresion comparador expresion
+   32 iteracion: WHILE PA condicion PC programa ENDWHILE
 
-   32 comparador: OP_MEN
-   33           | OP_MAY
-   34           | OP_MEN_IG
-   35           | OP_MAY_IG
-   36           | OP_IGUAL
-   37           | OP_DIST
+   33 condicion: OP_NOT condicion_simple
+   34          | condicion_multiple
+   35          | condicion_simple
 
-   38 expresion: expresion OP_SUM termino
-   39          | expresion OP_RES termino
-   40          | termino
-   41          | OP_RES expresion
+   36 condicion_multiple: comparacion OP_AND comparacion
+   37                   | comparacion OP_OR comparacion
 
-   42 termino: termino OP_MULT factor
-   43        | termino OP_DIV factor
-   44        | factor
+   38 condicion_simple: comparacion
 
-   45 factor: PA expresion PC
-   46       | constante
-   47       | ID
+   39 comparacion: expresion comparador expresion
 
-   48 constante: constante_num
-   49          | CTE_STRING
+   40 comparador: OP_MEN
+   41           | OP_MAY
+   42           | OP_MEN_IG
+   43           | OP_MAY_IG
+   44           | OP_IGUAL
+   45           | OP_DIST
 
-   50 constante_num: CTE_ENT
-   51              | CTE_REAL
+   46 expresion: expresion OP_SUM termino
+   47          | expresion OP_RES termino
+   48          | termino
+   49          | LONG PA COR_A lista_id COR_C PC
+   50          | OP_RES expresion
+
+   51 lista_id: ID
+   52         | lista_id COMA ID
+
+   53 termino: termino OP_MULT factor
+   54        | termino OP_DIV factor
+   55        | factor
+
+   56 factor: PA expresion PC
+   57       | constante
+   58       | ID
+
+   59 constante: constante_num
+   60          | CTE_STRING
+
+   61 constante_num: CTE_ENT
+   62              | CTE_REAL
 
 
 Terminales con las reglas donde aparecen
 
 $end (0) 0
 error (256)
-WHILE (258) 24
-ENDWHILE (259) 24
-IF (260) 22 23
-THEN (261) 22 23
-ELSE (262) 22
-ENDIF (263) 22 23
+WHILE (258) 32
+ENDWHILE (259) 32
+IF (260) 22 23 24 31
+THEN (261) 22 23 24 31
+ELSE (262) 22 24
+ENDIF (263) 22 23 24 31
 GET (264) 21
 DISPLAY (265) 19 20
 DIM (266) 10
@@ -99,82 +114,94 @@ AS (267) 12
 T_INT (268) 13
 T_FLOAT (269) 14
 T_STRING (270) 15
-ID (271) 11 12 17 18 19 21 47
-CTE_STRING (272) 49
-CTE_ENT (273) 50
-CTE_REAL (274) 51
-OP_SUM (275) 38
-OP_RES (276) 39 41
-OP_MULT (277) 42
-OP_DIV (278) 43
-OP_ASIG (279) 16 18
-OP_MAY (280) 33
-OP_MAY_IG (281) 35
-OP_MEN (282) 32
-OP_MEN_IG (283) 34
-OP_IGUAL (284) 36
-OP_DIST (285) 37
-OP_AND (286) 28
-OP_OR (287) 29
-OP_NOT (288) 25
-PA (289) 22 23 24 45
-PC (290) 22 23 24 45
-PYC (291)
-COMA (292) 11
-DOS_PUNT (293)
-COR_A (294) 10 12
-COR_C (295) 10 12
-MENOS_UNARIO (296)
+EQUMAX (271) 25
+EQUMIN (272) 26
+LONG (273) 49
+ID (274) 11 12 17 18 19 21 30 51 52 58
+CTE_STRING (275) 60
+CTE_ENT (276) 61
+CTE_REAL (277) 62
+OP_SUM (278) 46
+OP_RES (279) 47 50
+OP_MULT (280) 53
+OP_DIV (281) 54
+OP_ASIG (282) 16 18
+OP_MAY (283) 41
+OP_MAY_IG (284) 43
+OP_MEN (285) 40
+OP_MEN_IG (286) 42
+OP_IGUAL (287) 44
+OP_DIST (288) 45
+OP_AND (289) 36
+OP_OR (290) 37
+OP_NOT (291) 33
+PA (292) 22 23 24 25 26 31 32 49 56
+PC (293) 22 23 24 25 26 31 32 49 56
+PYC (294) 25 26
+COMA (295) 11 28 52
+DOS_PUNT (296)
+COR_A (297) 10 12 25 26 49
+COR_C (298) 10 12 25 26 49
+MENOS_UNARIO (299)
 
 
 No terminales con las reglas donde aparecen
 
-$accept (42)
+$accept (45)
     en la izquierda: 0
-inicio (43)
+inicio (46)
     en la izquierda: 1, en la derecha: 0
-programa (44)
-    en la izquierda: 2 3, en la derecha: 1 3 22 23 24
-sentencia (45)
+programa (47)
+    en la izquierda: 2 3, en la derecha: 1 3 22 23 24 31 32
+sentencia (48)
     en la izquierda: 4 5 6 7 8 9, en la derecha: 2 3
-dec_var (46)
+dec_var (49)
     en la izquierda: 10, en la derecha: 4
-lista_simetrica (47)
+lista_simetrica (50)
     en la izquierda: 11 12, en la derecha: 10 11
-tipo_dato (48)
+tipo_dato (51)
     en la izquierda: 13 14 15, en la derecha: 11 12
-asignacion (49)
+asignacion (52)
     en la izquierda: 16, en la derecha: 9
-lista_de_asignaciones (50)
+lista_de_asignaciones (53)
     en la izquierda: 17 18, en la derecha: 16 18
-impresion (51)
+impresion (54)
     en la izquierda: 19 20, en la derecha: 5
-lectura (52)
+lectura (55)
     en la izquierda: 21, en la derecha: 6
-condicional (53)
-    en la izquierda: 22 23, en la derecha: 7
-iteracion (54)
-    en la izquierda: 24, en la derecha: 8
-condicion (55)
-    en la izquierda: 25 26 27, en la derecha: 22 23 24
-condicion_multiple (56)
-    en la izquierda: 28 29, en la derecha: 26
-condicion_simple (57)
-    en la izquierda: 30, en la derecha: 25 27
-comparacion (58)
-    en la izquierda: 31, en la derecha: 28 29 30
-comparador (59)
-    en la izquierda: 32 33 34 35 36 37, en la derecha: 31
-expresion (60)
-    en la izquierda: 38 39 40 41, en la derecha: 16 31 38 39 41 45
-termino (61)
-    en la izquierda: 42 43 44, en la derecha: 38 39 40 42 43
-factor (62)
-    en la izquierda: 45 46 47, en la derecha: 42 43 44
-constante (63)
-    en la izquierda: 48 49, en la derecha: 20 46
-constante_num (64)
-    en la izquierda: 50 51, en la derecha: 48
+condicional (56)
+    en la izquierda: 22 23 24 31, en la derecha: 7
+equ (57)
+    en la izquierda: 25 26, en la derecha: 23 24
+lista_factores (58)
+    en la izquierda: 27 28, en la derecha: 25 26 28
+equfactor (59)
+    en la izquierda: 29 30, en la derecha: 27 28
+iteracion (60)
+    en la izquierda: 32, en la derecha: 8
+condicion (61)
+    en la izquierda: 33 34 35, en la derecha: 22 31 32
+condicion_multiple (62)
+    en la izquierda: 36 37, en la derecha: 34
+condicion_simple (63)
+    en la izquierda: 38, en la derecha: 33 35
+comparacion (64)
+    en la izquierda: 39, en la derecha: 36 37 38
+comparador (65)
+    en la izquierda: 40 41 42 43 44 45, en la derecha: 39
+expresion (66)
+    en la izquierda: 46 47 48 49 50, en la derecha: 16 25 26 39 46
+    47 50 56
+lista_id (67)
+    en la izquierda: 51 52, en la derecha: 49 52
+termino (68)
+    en la izquierda: 53 54 55, en la derecha: 46 47 48 53 54
+factor (69)
+    en la izquierda: 56 57 58, en la derecha: 53 54 55
+constante (70)
+    en la izquierda: 59 60, en la derecha: 20 57
+constante_num (71)
+    en la izquierda: 61 62, en la derecha: 29 59
 
 
 estado 0
@@ -202,7 +229,7 @@ estado 0
 
 estado 1
 
-   24 iteracion: WHILE . PA condicion PC programa ENDWHILE
+   32 iteracion: WHILE . PA condicion PC programa ENDWHILE
 
     PA  desplazar e ir al estado 17
 
@@ -210,7 +237,9 @@ estado 1
 estado 2
 
    22 condicional: IF . PA condicion PC THEN programa ELSE programa ENDIF
-   23            | IF . PA condicion PC THEN programa ENDIF
+   23            | IF . PA equ PC THEN programa ENDIF
+   24            | IF . PA equ PC THEN programa ELSE programa ENDIF
+   31            | IF . PA condicion PC THEN programa ENDIF
 
     PA  desplazar e ir al estado 18
 
@@ -340,48 +369,55 @@ estado 16
 
 estado 17
 
-   24 iteracion: WHILE PA . condicion PC programa ENDWHILE
+   32 iteracion: WHILE PA . condicion PC programa ENDWHILE
 
-    ID          desplazar e ir al estado 30
+    LONG        desplazar e ir al estado 30
+    ID          desplazar e ir al estado 31
     CTE_STRING  desplazar e ir al estado 21
     CTE_ENT     desplazar e ir al estado 22
     CTE_REAL    desplazar e ir al estado 23
-    OP_RES      desplazar e ir al estado 31
-    OP_NOT      desplazar e ir al estado 32
-    PA          desplazar e ir al estado 33
+    OP_RES      desplazar e ir al estado 32
+    OP_NOT      desplazar e ir al estado 33
+    PA          desplazar e ir al estado 34
 
-    condicion           ir al estado 34
-    condicion_multiple  ir al estado 35
-    condicion_simple    ir al estado 36
-    comparacion         ir al estado 37
-    expresion           ir al estado 38
-    termino             ir al estado 39
-    factor              ir al estado 40
-    constante           ir al estado 41
+    condicion           ir al estado 35
+    condicion_multiple  ir al estado 36
+    condicion_simple    ir al estado 37
+    comparacion         ir al estado 38
+    expresion           ir al estado 39
+    termino             ir al estado 40
+    factor              ir al estado 41
+    constante           ir al estado 42
     constante_num       ir al estado 25
 
 
 estado 18
 
    22 condicional: IF PA . condicion PC THEN programa ELSE programa ENDIF
-   23            | IF PA . condicion PC THEN programa ENDIF
+   23            | IF PA . equ PC THEN programa ENDIF
+   24            | IF PA . equ PC THEN programa ELSE programa ENDIF
+   31            | IF PA . condicion PC THEN programa ENDIF
 
-    ID          desplazar e ir al estado 30
+    EQUMAX      desplazar e ir al estado 43
+    EQUMIN      desplazar e ir al estado 44
+    LONG        desplazar e ir al estado 30
+    ID          desplazar e ir al estado 31
     CTE_STRING  desplazar e ir al estado 21
     CTE_ENT     desplazar e ir al estado 22
     CTE_REAL    desplazar e ir al estado 23
-    OP_RES      desplazar e ir al estado 31
-    OP_NOT      desplazar e ir al estado 32
-    PA          desplazar e ir al estado 33
+    OP_RES      desplazar e ir al estado 32
+    OP_NOT      desplazar e ir al estado 33
+    PA          desplazar e ir al estado 34
 
-    condicion           ir al estado 42
-    condicion_multiple  ir al estado 35
-    condicion_simple    ir al estado 36
-    comparacion         ir al estado 37
-    expresion           ir al estado 38
-    termino             ir al estado 39
-    factor              ir al estado 40
-    constante           ir al estado 41
+    equ                 ir al estado 45
+    condicion           ir al estado 46
+    condicion_multiple  ir al estado 36
+    condicion_simple    ir al estado 37
+    comparacion         ir al estado 38
+    expresion           ir al estado 39
+    termino             ir al estado 40
+    factor              ir al estado 41
+    constante           ir al estado 42
     constante_num       ir al estado 25
 
 
@@ -401,23 +437,23 @@ estado 20
 
 estado 21
 
-   49 constante: CTE_STRING .
+   60 constante: CTE_STRING .
 
-    $default  reduce usando la regla 49 (constante)
+    $default  reduce usando la regla 60 (constante)
 
 
 estado 22
 
-   50 constante_num: CTE_ENT .
+   61 constante_num: CTE_ENT .
 
-    $default  reduce usando la regla 50 (constante_num)
+    $default  reduce usando la regla 61 (constante_num)
 
 
 estado 23
 
-   51 constante_num: CTE_REAL .
+   62 constante_num: CTE_REAL .
 
-    $default  reduce usando la regla 51 (constante_num)
+    $default  reduce usando la regla 62 (constante_num)
 
 
 estado 24
@@ -429,18 +465,18 @@ estado 24
 
 estado 25
 
-   48 constante: constante_num .
+   59 constante: constante_num .
 
-    $default  reduce usando la regla 48 (constante)
+    $default  reduce usando la regla 59 (constante)
 
 
 estado 26
 
    10 dec_var: DIM COR_A . lista_simetrica COR_C
 
-    ID  desplazar e ir al estado 43
+    ID  desplazar e ir al estado 47
 
-    lista_simetrica  ir al estado 44
+    lista_simetrica  ir al estado 48
 
 
 estado 27
@@ -462,242 +498,282 @@ estado 29
    16 asignacion: lista_de_asignaciones OP_ASIG . expresion
    18 lista_de_asignaciones: lista_de_asignaciones OP_ASIG . ID
 
-    ID          desplazar e ir al estado 45
+    LONG        desplazar e ir al estado 30
+    ID          desplazar e ir al estado 49
     CTE_STRING  desplazar e ir al estado 21
     CTE_ENT     desplazar e ir al estado 22
     CTE_REAL    desplazar e ir al estado 23
-    OP_RES      desplazar e ir al estado 31
-    PA          desplazar e ir al estado 33
+    OP_RES      desplazar e ir al estado 32
+    PA          desplazar e ir al estado 34
 
-    expresion      ir al estado 46
-    termino        ir al estado 39
-    factor         ir al estado 40
-    constante      ir al estado 41
+    expresion      ir al estado 50
+    termino        ir al estado 40
+    factor         ir al estado 41
+    constante      ir al estado 42
     constante_num  ir al estado 25
 
 
 estado 30
 
-   47 factor: ID .
+   49 expresion: LONG . PA COR_A lista_id COR_C PC
 
-    $default  reduce usando la regla 47 (factor)
+    PA  desplazar e ir al estado 51
 
 
 estado 31
 
-   41 expresion: OP_RES . expresion
+   58 factor: ID .
 
-    ID          desplazar e ir al estado 30
-    CTE_STRING  desplazar e ir al estado 21
-    CTE_ENT     desplazar e ir al estado 22
-    CTE_REAL    desplazar e ir al estado 23
-    OP_RES      desplazar e ir al estado 31
-    PA          desplazar e ir al estado 33
-
-    expresion      ir al estado 47
-    termino        ir al estado 39
-    factor         ir al estado 40
-    constante      ir al estado 41
-    constante_num  ir al estado 25
+    $default  reduce usando la regla 58 (factor)
 
 
 estado 32
 
-   25 condicion: OP_NOT . condicion_simple
+   50 expresion: OP_RES . expresion
 
-    ID          desplazar e ir al estado 30
+    LONG        desplazar e ir al estado 30
+    ID          desplazar e ir al estado 31
     CTE_STRING  desplazar e ir al estado 21
     CTE_ENT     desplazar e ir al estado 22
     CTE_REAL    desplazar e ir al estado 23
-    OP_RES      desplazar e ir al estado 31
-    PA          desplazar e ir al estado 33
+    OP_RES      desplazar e ir al estado 32
+    PA          desplazar e ir al estado 34
 
-    condicion_simple  ir al estado 48
-    comparacion       ir al estado 49
-    expresion         ir al estado 38
-    termino           ir al estado 39
-    factor            ir al estado 40
-    constante         ir al estado 41
-    constante_num     ir al estado 25
+    expresion      ir al estado 52
+    termino        ir al estado 40
+    factor         ir al estado 41
+    constante      ir al estado 42
+    constante_num  ir al estado 25
 
 
 estado 33
 
-   45 factor: PA . expresion PC
+   33 condicion: OP_NOT . condicion_simple
 
-    ID          desplazar e ir al estado 30
+    LONG        desplazar e ir al estado 30
+    ID          desplazar e ir al estado 31
     CTE_STRING  desplazar e ir al estado 21
     CTE_ENT     desplazar e ir al estado 22
     CTE_REAL    desplazar e ir al estado 23
-    OP_RES      desplazar e ir al estado 31
-    PA          desplazar e ir al estado 33
+    OP_RES      desplazar e ir al estado 32
+    PA          desplazar e ir al estado 34
 
-    expresion      ir al estado 50
-    termino        ir al estado 39
-    factor         ir al estado 40
-    constante      ir al estado 41
-    constante_num  ir al estado 25
+    condicion_simple  ir al estado 53
+    comparacion       ir al estado 54
+    expresion         ir al estado 39
+    termino           ir al estado 40
+    factor            ir al estado 41
+    constante         ir al estado 42
+    constante_num     ir al estado 25
 
 
 estado 34
 
-   24 iteracion: WHILE PA condicion . PC programa ENDWHILE
+   56 factor: PA . expresion PC
 
-    PC  desplazar e ir al estado 51
+    LONG        desplazar e ir al estado 30
+    ID          desplazar e ir al estado 31
+    CTE_STRING  desplazar e ir al estado 21
+    CTE_ENT     desplazar e ir al estado 22
+    CTE_REAL    desplazar e ir al estado 23
+    OP_RES      desplazar e ir al estado 32
+    PA          desplazar e ir al estado 34
+
+    expresion      ir al estado 55
+    termino        ir al estado 40
+    factor         ir al estado 41
+    constante      ir al estado 42
+    constante_num  ir al estado 25
 
 
 estado 35
 
-   26 condicion: condicion_multiple .
+   32 iteracion: WHILE PA condicion . PC programa ENDWHILE
 
-    $default  reduce usando la regla 26 (condicion)
+    PC  desplazar e ir al estado 56
 
 
 estado 36
 
-   27 condicion: condicion_simple .
+   34 condicion: condicion_multiple .
 
-    $default  reduce usando la regla 27 (condicion)
+    $default  reduce usando la regla 34 (condicion)
 
 
 estado 37
 
-   28 condicion_multiple: comparacion . OP_AND comparacion
-   29                   | comparacion . OP_OR comparacion
-   30 condicion_simple: comparacion .
+   35 condicion: condicion_simple .
 
-    OP_AND  desplazar e ir al estado 52
-    OP_OR   desplazar e ir al estado 53
-
-    $default  reduce usando la regla 30 (condicion_simple)
+    $default  reduce usando la regla 35 (condicion)
 
 
 estado 38
 
-   31 comparacion: expresion . comparador expresion
-   38 expresion: expresion . OP_SUM termino
-   39          | expresion . OP_RES termino
+   36 condicion_multiple: comparacion . OP_AND comparacion
+   37                   | comparacion . OP_OR comparacion
+   38 condicion_simple: comparacion .
 
-    OP_SUM     desplazar e ir al estado 54
-    OP_RES     desplazar e ir al estado 55
-    OP_MAY     desplazar e ir al estado 56
-    OP_MAY_IG  desplazar e ir al estado 57
-    OP_MEN     desplazar e ir al estado 58
-    OP_MEN_IG  desplazar e ir al estado 59
-    OP_IGUAL   desplazar e ir al estado 60
-    OP_DIST    desplazar e ir al estado 61
+    OP_AND  desplazar e ir al estado 57
+    OP_OR   desplazar e ir al estado 58
 
-    comparador  ir al estado 62
+    $default  reduce usando la regla 38 (condicion_simple)
 
 
 estado 39
 
-   40 expresion: termino .
-   42 termino: termino . OP_MULT factor
-   43        | termino . OP_DIV factor
+   39 comparacion: expresion . comparador expresion
+   46 expresion: expresion . OP_SUM termino
+   47          | expresion . OP_RES termino
 
-    OP_MULT  desplazar e ir al estado 63
-    OP_DIV   desplazar e ir al estado 64
+    OP_SUM     desplazar e ir al estado 59
+    OP_RES     desplazar e ir al estado 60
+    OP_MAY     desplazar e ir al estado 61
+    OP_MAY_IG  desplazar e ir al estado 62
+    OP_MEN     desplazar e ir al estado 63
+    OP_MEN_IG  desplazar e ir al estado 64
+    OP_IGUAL   desplazar e ir al estado 65
+    OP_DIST    desplazar e ir al estado 66
 
-    $default  reduce usando la regla 40 (expresion)
+    comparador  ir al estado 67
 
 
 estado 40
 
-   44 termino: factor .
+   48 expresion: termino .
+   53 termino: termino . OP_MULT factor
+   54        | termino . OP_DIV factor
 
-    $default  reduce usando la regla 44 (termino)
+    OP_MULT  desplazar e ir al estado 68
+    OP_DIV   desplazar e ir al estado 69
+
+    $default  reduce usando la regla 48 (expresion)
 
 
 estado 41
 
-   46 factor: constante .
+   55 termino: factor .
 
-    $default  reduce usando la regla 46 (factor)
+    $default  reduce usando la regla 55 (termino)
 
 
 estado 42
 
-   22 condicional: IF PA condicion . PC THEN programa ELSE programa ENDIF
-   23            | IF PA condicion . PC THEN programa ENDIF
+   57 factor: constante .
 
-    PC  desplazar e ir al estado 65
+    $default  reduce usando la regla 57 (factor)
 
 
 estado 43
 
-   11 lista_simetrica: ID . COMA lista_simetrica COMA tipo_dato
-   12                | ID . COR_C AS COR_A tipo_dato
+   25 equ: EQUMAX . PA expresion PYC COR_A lista_factores COR_C PC
 
-    COMA   desplazar e ir al estado 66
-    COR_C  desplazar e ir al estado 67
+    PA  desplazar e ir al estado 70
 
 
 estado 44
 
-   10 dec_var: DIM COR_A lista_simetrica . COR_C
+   26 equ: EQUMIN . PA expresion PYC COR_A lista_factores COR_C PC
 
-    COR_C  desplazar e ir al estado 68
+    PA  desplazar e ir al estado 71
 
 
 estado 45
 
-   18 lista_de_asignaciones: lista_de_asignaciones OP_ASIG ID .
-   47 factor: ID .
+   23 condicional: IF PA equ . PC THEN programa ENDIF
+   24            | IF PA equ . PC THEN programa ELSE programa ENDIF
 
-    OP_ASIG   reduce usando la regla 18 (lista_de_asignaciones)
-    $default  reduce usando la regla 47 (factor)
+    PC  desplazar e ir al estado 72
 
 
 estado 46
 
-   16 asignacion: lista_de_asignaciones OP_ASIG expresion .
-   38 expresion: expresion . OP_SUM termino
-   39          | expresion . OP_RES termino
+   22 condicional: IF PA condicion . PC THEN programa ELSE programa ENDIF
+   31            | IF PA condicion . PC THEN programa ENDIF
 
-    OP_SUM  desplazar e ir al estado 54
-    OP_RES  desplazar e ir al estado 55
-
-    $default  reduce usando la regla 16 (asignacion)
+    PC  desplazar e ir al estado 73
 
 
 estado 47
 
-   38 expresion: expresion . OP_SUM termino
-   39          | expresion . OP_RES termino
-   41          | OP_RES expresion .
+   11 lista_simetrica: ID . COMA lista_simetrica COMA tipo_dato
+   12                | ID . COR_C AS COR_A tipo_dato
 
-    $default  reduce usando la regla 41 (expresion)
+    COMA   desplazar e ir al estado 74
+    COR_C  desplazar e ir al estado 75
 
 
 estado 48
 
-   25 condicion: OP_NOT condicion_simple .
+   10 dec_var: DIM COR_A lista_simetrica . COR_C
 
-    $default  reduce usando la regla 25 (condicion)
+    COR_C  desplazar e ir al estado 76
 
 
 estado 49
 
-   30 condicion_simple: comparacion .
+   18 lista_de_asignaciones: lista_de_asignaciones OP_ASIG ID .
+   58 factor: ID .
 
-    $default  reduce usando la regla 30 (condicion_simple)
+    OP_ASIG   reduce usando la regla 18 (lista_de_asignaciones)
+    $default  reduce usando la regla 58 (factor)
 
 
 estado 50
 
-   38 expresion: expresion . OP_SUM termino
-   39          | expresion . OP_RES termino
-   45 factor: PA expresion . PC
+   16 asignacion: lista_de_asignaciones OP_ASIG expresion .
+   46 expresion: expresion . OP_SUM termino
+   47          | expresion . OP_RES termino
 
-    OP_SUM  desplazar e ir al estado 54
-    OP_RES  desplazar e ir al estado 55
-    PC      desplazar e ir al estado 69
+    OP_SUM  desplazar e ir al estado 59
+    OP_RES  desplazar e ir al estado 60
+
+    $default  reduce usando la regla 16 (asignacion)
 
 
 estado 51
 
-   24 iteracion: WHILE PA condicion PC . programa ENDWHILE
+   49 expresion: LONG PA . COR_A lista_id COR_C PC
+
+    COR_A  desplazar e ir al estado 77
+
+
+estado 52
+
+   46 expresion: expresion . OP_SUM termino
+   47          | expresion . OP_RES termino
+   50          | OP_RES expresion .
+
+    $default  reduce usando la regla 50 (expresion)
+
+
+estado 53
+
+   33 condicion: OP_NOT condicion_simple .
+
+    $default  reduce usando la regla 33 (condicion)
+
+
+estado 54
+
+   38 condicion_simple: comparacion .
+
+    $default  reduce usando la regla 38 (condicion_simple)
+
+
+estado 55
+
+   46 expresion: expresion . OP_SUM termino
+   47          | expresion . OP_RES termino
+   56 factor: PA expresion . PC
+
+    OP_SUM  desplazar e ir al estado 59
+    OP_RES  desplazar e ir al estado 60
+    PC      desplazar e ir al estado 78
+
+
+estado 56
+
+   32 iteracion: WHILE PA condicion PC . programa ENDWHILE
 
     WHILE    desplazar e ir al estado 1
     IF       desplazar e ir al estado 2
@@ -706,7 +782,7 @@ estado 51
     DIM      desplazar e ir al estado 5
     ID       desplazar e ir al estado 6
 
-    programa               ir al estado 70
+    programa               ir al estado 79
     sentencia              ir al estado 9
     dec_var                ir al estado 10
     asignacion             ir al estado 11
@@ -717,211 +793,269 @@ estado 51
     iteracion              ir al estado 16
 
 
-estado 52
-
-   28 condicion_multiple: comparacion OP_AND . comparacion
-
-    ID          desplazar e ir al estado 30
-    CTE_STRING  desplazar e ir al estado 21
-    CTE_ENT     desplazar e ir al estado 22
-    CTE_REAL    desplazar e ir al estado 23
-    OP_RES      desplazar e ir al estado 31
-    PA          desplazar e ir al estado 33
-
-    comparacion    ir al estado 71
-    expresion      ir al estado 38
-    termino        ir al estado 39
-    factor         ir al estado 40
-    constante      ir al estado 41
-    constante_num  ir al estado 25
-
-
-estado 53
-
-   29 condicion_multiple: comparacion OP_OR . comparacion
-
-    ID          desplazar e ir al estado 30
-    CTE_STRING  desplazar e ir al estado 21
-    CTE_ENT     desplazar e ir al estado 22
-    CTE_REAL    desplazar e ir al estado 23
-    OP_RES      desplazar e ir al estado 31
-    PA          desplazar e ir al estado 33
-
-    comparacion    ir al estado 72
-    expresion      ir al estado 38
-    termino        ir al estado 39
-    factor         ir al estado 40
-    constante      ir al estado 41
-    constante_num  ir al estado 25
-
-
-estado 54
-
-   38 expresion: expresion OP_SUM . termino
-
-    ID          desplazar e ir al estado 30
-    CTE_STRING  desplazar e ir al estado 21
-    CTE_ENT     desplazar e ir al estado 22
-    CTE_REAL    desplazar e ir al estado 23
-    PA          desplazar e ir al estado 33
-
-    termino        ir al estado 73
-    factor         ir al estado 40
-    constante      ir al estado 41
-    constante_num  ir al estado 25
-
-
-estado 55
-
-   39 expresion: expresion OP_RES . termino
-
-    ID          desplazar e ir al estado 30
-    CTE_STRING  desplazar e ir al estado 21
-    CTE_ENT     desplazar e ir al estado 22
-    CTE_REAL    desplazar e ir al estado 23
-    PA          desplazar e ir al estado 33
-
-    termino        ir al estado 74
-    factor         ir al estado 40
-    constante      ir al estado 41
-    constante_num  ir al estado 25
-
-
-estado 56
-
-   33 comparador: OP_MAY .
-
-    $default  reduce usando la regla 33 (comparador)
-
-
 estado 57
 
-   35 comparador: OP_MAY_IG .
+   36 condicion_multiple: comparacion OP_AND . comparacion
 
-    $default  reduce usando la regla 35 (comparador)
+    LONG        desplazar e ir al estado 30
+    ID          desplazar e ir al estado 31
+    CTE_STRING  desplazar e ir al estado 21
+    CTE_ENT     desplazar e ir al estado 22
+    CTE_REAL    desplazar e ir al estado 23
+    OP_RES      desplazar e ir al estado 32
+    PA          desplazar e ir al estado 34
+
+    comparacion    ir al estado 80
+    expresion      ir al estado 39
+    termino        ir al estado 40
+    factor         ir al estado 41
+    constante      ir al estado 42
+    constante_num  ir al estado 25
 
 
 estado 58
 
-   32 comparador: OP_MEN .
+   37 condicion_multiple: comparacion OP_OR . comparacion
 
-    $default  reduce usando la regla 32 (comparador)
+    LONG        desplazar e ir al estado 30
+    ID          desplazar e ir al estado 31
+    CTE_STRING  desplazar e ir al estado 21
+    CTE_ENT     desplazar e ir al estado 22
+    CTE_REAL    desplazar e ir al estado 23
+    OP_RES      desplazar e ir al estado 32
+    PA          desplazar e ir al estado 34
+
+    comparacion    ir al estado 81
+    expresion      ir al estado 39
+    termino        ir al estado 40
+    factor         ir al estado 41
+    constante      ir al estado 42
+    constante_num  ir al estado 25
 
 
 estado 59
 
-   34 comparador: OP_MEN_IG .
+   46 expresion: expresion OP_SUM . termino
 
-    $default  reduce usando la regla 34 (comparador)
+    ID          desplazar e ir al estado 31
+    CTE_STRING  desplazar e ir al estado 21
+    CTE_ENT     desplazar e ir al estado 22
+    CTE_REAL    desplazar e ir al estado 23
+    PA          desplazar e ir al estado 34
+
+    termino        ir al estado 82
+    factor         ir al estado 41
+    constante      ir al estado 42
+    constante_num  ir al estado 25
 
 
 estado 60
 
-   36 comparador: OP_IGUAL .
+   47 expresion: expresion OP_RES . termino
 
-    $default  reduce usando la regla 36 (comparador)
+    ID          desplazar e ir al estado 31
+    CTE_STRING  desplazar e ir al estado 21
+    CTE_ENT     desplazar e ir al estado 22
+    CTE_REAL    desplazar e ir al estado 23
+    PA          desplazar e ir al estado 34
+
+    termino        ir al estado 83
+    factor         ir al estado 41
+    constante      ir al estado 42
+    constante_num  ir al estado 25
 
 
 estado 61
 
-   37 comparador: OP_DIST .
+   41 comparador: OP_MAY .
 
-    $default  reduce usando la regla 37 (comparador)
+    $default  reduce usando la regla 41 (comparador)
 
 
 estado 62
 
-   31 comparacion: expresion comparador . expresion
+   43 comparador: OP_MAY_IG .
 
-    ID          desplazar e ir al estado 30
-    CTE_STRING  desplazar e ir al estado 21
-    CTE_ENT     desplazar e ir al estado 22
-    CTE_REAL    desplazar e ir al estado 23
-    OP_RES      desplazar e ir al estado 31
-    PA          desplazar e ir al estado 33
-
-    expresion      ir al estado 75
-    termino        ir al estado 39
-    factor         ir al estado 40
-    constante      ir al estado 41
-    constante_num  ir al estado 25
+    $default  reduce usando la regla 43 (comparador)
 
 
 estado 63
 
-   42 termino: termino OP_MULT . factor
+   40 comparador: OP_MEN .
 
-    ID          desplazar e ir al estado 30
-    CTE_STRING  desplazar e ir al estado 21
-    CTE_ENT     desplazar e ir al estado 22
-    CTE_REAL    desplazar e ir al estado 23
-    PA          desplazar e ir al estado 33
-
-    factor         ir al estado 76
-    constante      ir al estado 41
-    constante_num  ir al estado 25
+    $default  reduce usando la regla 40 (comparador)
 
 
 estado 64
 
-   43 termino: termino OP_DIV . factor
+   42 comparador: OP_MEN_IG .
 
-    ID          desplazar e ir al estado 30
-    CTE_STRING  desplazar e ir al estado 21
-    CTE_ENT     desplazar e ir al estado 22
-    CTE_REAL    desplazar e ir al estado 23
-    PA          desplazar e ir al estado 33
-
-    factor         ir al estado 77
-    constante      ir al estado 41
-    constante_num  ir al estado 25
+    $default  reduce usando la regla 42 (comparador)
 
 
 estado 65
 
-   22 condicional: IF PA condicion PC . THEN programa ELSE programa ENDIF
-   23            | IF PA condicion PC . THEN programa ENDIF
+   44 comparador: OP_IGUAL .
 
-    THEN  desplazar e ir al estado 78
+    $default  reduce usando la regla 44 (comparador)
 
 
 estado 66
 
-   11 lista_simetrica: ID COMA . lista_simetrica COMA tipo_dato
+   45 comparador: OP_DIST .
 
-    ID  desplazar e ir al estado 43
-
-    lista_simetrica  ir al estado 79
+    $default  reduce usando la regla 45 (comparador)
 
 
 estado 67
 
-   12 lista_simetrica: ID COR_C . AS COR_A tipo_dato
+   39 comparacion: expresion comparador . expresion
 
-    AS  desplazar e ir al estado 80
+    LONG        desplazar e ir al estado 30
+    ID          desplazar e ir al estado 31
+    CTE_STRING  desplazar e ir al estado 21
+    CTE_ENT     desplazar e ir al estado 22
+    CTE_REAL    desplazar e ir al estado 23
+    OP_RES      desplazar e ir al estado 32
+    PA          desplazar e ir al estado 34
+
+    expresion      ir al estado 84
+    termino        ir al estado 40
+    factor         ir al estado 41
+    constante      ir al estado 42
+    constante_num  ir al estado 25
 
 
 estado 68
+
+   53 termino: termino OP_MULT . factor
+
+    ID          desplazar e ir al estado 31
+    CTE_STRING  desplazar e ir al estado 21
+    CTE_ENT     desplazar e ir al estado 22
+    CTE_REAL    desplazar e ir al estado 23
+    PA          desplazar e ir al estado 34
+
+    factor         ir al estado 85
+    constante      ir al estado 42
+    constante_num  ir al estado 25
+
+
+estado 69
+
+   54 termino: termino OP_DIV . factor
+
+    ID          desplazar e ir al estado 31
+    CTE_STRING  desplazar e ir al estado 21
+    CTE_ENT     desplazar e ir al estado 22
+    CTE_REAL    desplazar e ir al estado 23
+    PA          desplazar e ir al estado 34
+
+    factor         ir al estado 86
+    constante      ir al estado 42
+    constante_num  ir al estado 25
+
+
+estado 70
+
+   25 equ: EQUMAX PA . expresion PYC COR_A lista_factores COR_C PC
+
+    LONG        desplazar e ir al estado 30
+    ID          desplazar e ir al estado 31
+    CTE_STRING  desplazar e ir al estado 21
+    CTE_ENT     desplazar e ir al estado 22
+    CTE_REAL    desplazar e ir al estado 23
+    OP_RES      desplazar e ir al estado 32
+    PA          desplazar e ir al estado 34
+
+    expresion      ir al estado 87
+    termino        ir al estado 40
+    factor         ir al estado 41
+    constante      ir al estado 42
+    constante_num  ir al estado 25
+
+
+estado 71
+
+   26 equ: EQUMIN PA . expresion PYC COR_A lista_factores COR_C PC
+
+    LONG        desplazar e ir al estado 30
+    ID          desplazar e ir al estado 31
+    CTE_STRING  desplazar e ir al estado 21
+    CTE_ENT     desplazar e ir al estado 22
+    CTE_REAL    desplazar e ir al estado 23
+    OP_RES      desplazar e ir al estado 32
+    PA          desplazar e ir al estado 34
+
+    expresion      ir al estado 88
+    termino        ir al estado 40
+    factor         ir al estado 41
+    constante      ir al estado 42
+    constante_num  ir al estado 25
+
+
+estado 72
+
+   23 condicional: IF PA equ PC . THEN programa ENDIF
+   24            | IF PA equ PC . THEN programa ELSE programa ENDIF
+
+    THEN  desplazar e ir al estado 89
+
+
+estado 73
+
+   22 condicional: IF PA condicion PC . THEN programa ELSE programa ENDIF
+   31            | IF PA condicion PC . THEN programa ENDIF
+
+    THEN  desplazar e ir al estado 90
+
+
+estado 74
+
+   11 lista_simetrica: ID COMA . lista_simetrica COMA tipo_dato
+
+    ID  desplazar e ir al estado 47
+
+    lista_simetrica  ir al estado 91
+
+
+estado 75
+
+   12 lista_simetrica: ID COR_C . AS COR_A tipo_dato
+
+    AS  desplazar e ir al estado 92
+
+
+estado 76
 
    10 dec_var: DIM COR_A lista_simetrica COR_C .
 
     $default  reduce usando la regla 10 (dec_var)
 
 
-estado 69
+estado 77
 
-   45 factor: PA expresion PC .
+   49 expresion: LONG PA COR_A . lista_id COR_C PC
 
-    $default  reduce usando la regla 45 (factor)
+    ID  desplazar e ir al estado 93
+
+    lista_id  ir al estado 94
 
 
-estado 70
+estado 78
+
+   56 factor: PA expresion PC .
+
+    $default  reduce usando la regla 56 (factor)
+
+
+estado 79
 
     3 programa: programa . sentencia
-   24 iteracion: WHILE PA condicion PC programa . ENDWHILE
+   32 iteracion: WHILE PA condicion PC programa . ENDWHILE
 
     WHILE     desplazar e ir al estado 1
-    ENDWHILE  desplazar e ir al estado 81
+    ENDWHILE  desplazar e ir al estado 95
     IF        desplazar e ir al estado 2
     GET       desplazar e ir al estado 3
     DISPLAY   desplazar e ir al estado 4
@@ -938,74 +1072,96 @@ estado 70
     iteracion              ir al estado 16
 
 
-estado 71
+estado 80
 
-   28 condicion_multiple: comparacion OP_AND comparacion .
+   36 condicion_multiple: comparacion OP_AND comparacion .
 
-    $default  reduce usando la regla 28 (condicion_multiple)
-
-
-estado 72
-
-   29 condicion_multiple: comparacion OP_OR comparacion .
-
-    $default  reduce usando la regla 29 (condicion_multiple)
+    $default  reduce usando la regla 36 (condicion_multiple)
 
 
-estado 73
+estado 81
 
-   38 expresion: expresion OP_SUM termino .
-   42 termino: termino . OP_MULT factor
-   43        | termino . OP_DIV factor
+   37 condicion_multiple: comparacion OP_OR comparacion .
 
-    OP_MULT  desplazar e ir al estado 63
-    OP_DIV   desplazar e ir al estado 64
-
-    $default  reduce usando la regla 38 (expresion)
+    $default  reduce usando la regla 37 (condicion_multiple)
 
 
-estado 74
+estado 82
 
-   39 expresion: expresion OP_RES termino .
-   42 termino: termino . OP_MULT factor
-   43        | termino . OP_DIV factor
+   46 expresion: expresion OP_SUM termino .
+   53 termino: termino . OP_MULT factor
+   54        | termino . OP_DIV factor
 
-    OP_MULT  desplazar e ir al estado 63
-    OP_DIV   desplazar e ir al estado 64
+    OP_MULT  desplazar e ir al estado 68
+    OP_DIV   desplazar e ir al estado 69
 
-    $default  reduce usando la regla 39 (expresion)
-
-
-estado 75
-
-   31 comparacion: expresion comparador expresion .
-   38 expresion: expresion . OP_SUM termino
-   39          | expresion . OP_RES termino
-
-    OP_SUM  desplazar e ir al estado 54
-    OP_RES  desplazar e ir al estado 55
-
-    $default  reduce usando la regla 31 (comparacion)
+    $default  reduce usando la regla 46 (expresion)
 
 
-estado 76
+estado 83
 
-   42 termino: termino OP_MULT factor .
+   47 expresion: expresion OP_RES termino .
+   53 termino: termino . OP_MULT factor
+   54        | termino . OP_DIV factor
 
-    $default  reduce usando la regla 42 (termino)
+    OP_MULT  desplazar e ir al estado 68
+    OP_DIV   desplazar e ir al estado 69
 
-
-estado 77
-
-   43 termino: termino OP_DIV factor .
-
-    $default  reduce usando la regla 43 (termino)
+    $default  reduce usando la regla 47 (expresion)
 
 
-estado 78
+estado 84
 
-   22 condicional: IF PA condicion PC THEN . programa ELSE programa ENDIF
-   23            | IF PA condicion PC THEN . programa ENDIF
+   39 comparacion: expresion comparador expresion .
+   46 expresion: expresion . OP_SUM termino
+   47          | expresion . OP_RES termino
+
+    OP_SUM  desplazar e ir al estado 59
+    OP_RES  desplazar e ir al estado 60
+
+    $default  reduce usando la regla 39 (comparacion)
+
+
+estado 85
+
+   53 termino: termino OP_MULT factor .
+
+    $default  reduce usando la regla 53 (termino)
+
+
+estado 86
+
+   54 termino: termino OP_DIV factor .
+
+    $default  reduce usando la regla 54 (termino)
+
+
+estado 87
+
+   25 equ: EQUMAX PA expresion . PYC COR_A lista_factores COR_C PC
+   46 expresion: expresion . OP_SUM termino
+   47          | expresion . OP_RES termino
+
+    OP_SUM  desplazar e ir al estado 59
+    OP_RES  desplazar e ir al estado 60
+    PYC     desplazar e ir al estado 96
+
+
+estado 88
+
+   26 equ: EQUMIN PA expresion . PYC COR_A lista_factores COR_C PC
+   46 expresion: expresion . OP_SUM termino
+   47          | expresion . OP_RES termino
+
+    OP_SUM  desplazar e ir al estado 59
+    OP_RES  desplazar e ir al estado 60
+    PYC     desplazar e ir al estado 97
+
+
+estado 89
+
+   23 condicional: IF PA equ PC THEN . programa ENDIF
+   24            | IF PA equ PC THEN . programa ELSE programa ENDIF
 
     WHILE    desplazar e ir al estado 1
     IF       desplazar e ir al estado 2
@@ -1014,7 +1170,7 @@ estado 78
     DIM      desplazar e ir al estado 5
     ID       desplazar e ir al estado 6
 
-    programa               ir al estado 82
+    programa               ir al estado 98
     sentencia              ir al estado 9
     dec_var                ir al estado 10
     asignacion             ir al estado 11
@@ -1025,37 +1181,90 @@ estado 78
     iteracion              ir al estado 16
 
 
-estado 79
+estado 90
 
-   11 lista_simetrica: ID COMA lista_simetrica . COMA tipo_dato
-
-    COMA  desplazar e ir al estado 83
-
-
-estado 80
-
-   12 lista_simetrica: ID COR_C AS . COR_A tipo_dato
-
-    COR_A  desplazar e ir al estado 84
-
-
-estado 81
-
-   24 iteracion: WHILE PA condicion PC programa ENDWHILE .
-
-    $default  reduce usando la regla 24 (iteracion)
-
-
-estado 82
-
-    3 programa: programa . sentencia
-   22 condicional: IF PA condicion PC THEN programa . ELSE programa ENDIF
-   23            | IF PA condicion PC THEN programa . ENDIF
+   22 condicional: IF PA condicion PC THEN . programa ELSE programa ENDIF
+   31            | IF PA condicion PC THEN . programa ENDIF
 
     WHILE    desplazar e ir al estado 1
     IF       desplazar e ir al estado 2
-    ELSE     desplazar e ir al estado 85
-    ENDIF    desplazar e ir al estado 86
+    GET      desplazar e ir al estado 3
+    DISPLAY  desplazar e ir al estado 4
+    DIM      desplazar e ir al estado 5
+    ID       desplazar e ir al estado 6
+
+    programa               ir al estado 99
+    sentencia              ir al estado 9
+    dec_var                ir al estado 10
+    asignacion             ir al estado 11
+    lista_de_asignaciones  ir al estado 12
+    impresion              ir al estado 13
+    lectura                ir al estado 14
+    condicional            ir al estado 15
+    iteracion              ir al estado 16
+
+
+estado 91
+
+   11 lista_simetrica: ID COMA lista_simetrica . COMA tipo_dato
+
+    COMA  desplazar e ir al estado 100
+
+
+estado 92
+
+   12 lista_simetrica: ID COR_C AS . COR_A tipo_dato
+
+    COR_A  desplazar e ir al estado 101
+
+
+estado 93
+
+   51 lista_id: ID .
+
+    $default  reduce usando la regla 51 (lista_id)
+
+
+estado 94
+
+   49 expresion: LONG PA COR_A lista_id . COR_C PC
+   52 lista_id: lista_id . COMA ID
+
+    COMA   desplazar e ir al estado 102
+    COR_C  desplazar e ir al estado 103
+
+
+estado 95
+
+   32 iteracion: WHILE PA condicion PC programa ENDWHILE .
+
+    $default  reduce usando la regla 32 (iteracion)
+
+
+estado 96
+
+   25 equ: EQUMAX PA expresion PYC . COR_A lista_factores COR_C PC
+
+    COR_A  desplazar e ir al estado 104
+
+
+estado 97
+
+   26 equ: EQUMIN PA expresion PYC . COR_A lista_factores COR_C PC
+
+    COR_A  desplazar e ir al estado 105
+
+
+estado 98
+
+    3 programa: programa . sentencia
+   23 condicional: IF PA equ PC THEN programa . ENDIF
+   24            | IF PA equ PC THEN programa . ELSE programa ENDIF
+
+    WHILE    desplazar e ir al estado 1
+    IF       desplazar e ir al estado 2
+    ELSE     desplazar e ir al estado 106
+    ENDIF    desplazar e ir al estado 107
     GET      desplazar e ir al estado 3
     DISPLAY  desplazar e ir al estado 4
     DIM      desplazar e ir al estado 5
@@ -1071,29 +1280,123 @@ estado 82
     iteracion              ir al estado 16
 
 
-estado 83
+estado 99
+
+    3 programa: programa . sentencia
+   22 condicional: IF PA condicion PC THEN programa . ELSE programa ENDIF
+   31            | IF PA condicion PC THEN programa . ENDIF
+
+    WHILE    desplazar e ir al estado 1
+    IF       desplazar e ir al estado 2
+    ELSE     desplazar e ir al estado 108
+    ENDIF    desplazar e ir al estado 109
+    GET      desplazar e ir al estado 3
+    DISPLAY  desplazar e ir al estado 4
+    DIM      desplazar e ir al estado 5
+    ID       desplazar e ir al estado 6
+
+    sentencia              ir al estado 28
+    dec_var                ir al estado 10
+    asignacion             ir al estado 11
+    lista_de_asignaciones  ir al estado 12
+    impresion              ir al estado 13
+    lectura                ir al estado 14
+    condicional            ir al estado 15
+    iteracion              ir al estado 16
+
+
+estado 100
 
    11 lista_simetrica: ID COMA lista_simetrica COMA . tipo_dato
 
-    T_INT     desplazar e ir al estado 87
-    T_FLOAT   desplazar e ir al estado 88
-    T_STRING  desplazar e ir al estado 89
+    T_INT     desplazar e ir al estado 110
+    T_FLOAT   desplazar e ir al estado 111
+    T_STRING  desplazar e ir al estado 112
 
-    tipo_dato  ir al estado 90
+    tipo_dato  ir al estado 113
 
 
-estado 84
+estado 101
 
    12 lista_simetrica: ID COR_C AS COR_A . tipo_dato
 
-    T_INT     desplazar e ir al estado 87
-    T_FLOAT   desplazar e ir al estado 88
-    T_STRING  desplazar e ir al estado 89
+    T_INT     desplazar e ir al estado 110
+    T_FLOAT   desplazar e ir al estado 111
+    T_STRING  desplazar e ir al estado 112
 
-    tipo_dato  ir al estado 91
+    tipo_dato  ir al estado 114
 
 
-estado 85
+estado 102
+
+   52 lista_id: lista_id COMA . ID
+
+    ID  desplazar e ir al estado 115
+
+
+estado 103
+
+   49 expresion: LONG PA COR_A lista_id COR_C . PC
+
+    PC  desplazar e ir al estado 116
+
+
+estado 104
+
+   25 equ: EQUMAX PA expresion PYC COR_A . lista_factores COR_C PC
+
+    ID        desplazar e ir al estado 117
+    CTE_ENT   desplazar e ir al estado 22
+    CTE_REAL  desplazar e ir al estado 23
+
+    lista_factores  ir al estado 118
+    equfactor       ir al estado 119
+    constante_num   ir al estado 120
+
+
+estado 105
+
+   26 equ: EQUMIN PA expresion PYC COR_A . lista_factores COR_C PC
+
+    ID        desplazar e ir al estado 117
+    CTE_ENT   desplazar e ir al estado 22
+    CTE_REAL  desplazar e ir al estado 23
+
+    lista_factores  ir al estado 121
+    equfactor       ir al estado 119
+    constante_num   ir al estado 120
+
+
+estado 106
+
+   24 condicional: IF PA equ PC THEN programa ELSE . programa ENDIF
+
+    WHILE    desplazar e ir al estado 1
+    IF       desplazar e ir al estado 2
+    GET      desplazar e ir al estado 3
+    DISPLAY  desplazar e ir al estado 4
+    DIM      desplazar e ir al estado 5
+    ID       desplazar e ir al estado 6
+
+    programa               ir al estado 122
+    sentencia              ir al estado 9
+    dec_var                ir al estado 10
+    asignacion             ir al estado 11
+    lista_de_asignaciones  ir al estado 12
+    impresion              ir al estado 13
+    lectura                ir al estado 14
+    condicional            ir al estado 15
+    iteracion              ir al estado 16
+
+
+estado 107
+
+   23 condicional: IF PA equ PC THEN programa ENDIF .
+
+    $default  reduce usando la regla 23 (condicional)
+
+
+estado 108
 
    22 condicional: IF PA condicion PC THEN programa ELSE . programa ENDIF
 
@@ -1104,7 +1407,7 @@ estado 85
     DIM      desplazar e ir al estado 5
     ID       desplazar e ir al estado 6
 
-    programa               ir al estado 92
+    programa               ir al estado 123
     sentencia              ir al estado 9
     dec_var                ir al estado 10
     asignacion             ir al estado 11
@@ -1115,56 +1418,109 @@ estado 85
     iteracion              ir al estado 16
 
 
-estado 86
+estado 109
 
-   23 condicional: IF PA condicion PC THEN programa ENDIF .
+   31 condicional: IF PA condicion PC THEN programa ENDIF .
 
-    $default  reduce usando la regla 23 (condicional)
+    $default  reduce usando la regla 31 (condicional)
 
 
-estado 87
+estado 110
 
    13 tipo_dato: T_INT .
 
     $default  reduce usando la regla 13 (tipo_dato)
 
 
-estado 88
+estado 111
 
    14 tipo_dato: T_FLOAT .
 
     $default  reduce usando la regla 14 (tipo_dato)
 
 
-estado 89
+estado 112
 
    15 tipo_dato: T_STRING .
 
     $default  reduce usando la regla 15 (tipo_dato)
 
 
-estado 90
+estado 113
 
    11 lista_simetrica: ID COMA lista_simetrica COMA tipo_dato .
 
     $default  reduce usando la regla 11 (lista_simetrica)
 
 
-estado 91
+estado 114
 
    12 lista_simetrica: ID COR_C AS COR_A tipo_dato .
 
     $default  reduce usando la regla 12 (lista_simetrica)
 
 
-estado 92
+estado 115
+
+   52 lista_id: lista_id COMA ID .
+
+    $default  reduce usando la regla 52 (lista_id)
+
+
+estado 116
+
+   49 expresion: LONG PA COR_A lista_id COR_C PC .
+
+    $default  reduce usando la regla 49 (expresion)
+
+
+estado 117
+
+   30 equfactor: ID .
+
+    $default  reduce usando la regla 30 (equfactor)
+
+
+estado 118
+
+   25 equ: EQUMAX PA expresion PYC COR_A lista_factores . COR_C PC
+   28 lista_factores: lista_factores . COMA equfactor
+
+    COMA   desplazar e ir al estado 124
+    COR_C  desplazar e ir al estado 125
+
+
+estado 119
+
+   27 lista_factores: equfactor .
+
+    $default  reduce usando la regla 27 (lista_factores)
+
+
+estado 120
+
+   29 equfactor: constante_num .
+
+    $default  reduce usando la regla 29 (equfactor)
+
+
+estado 121
+
+   26 equ: EQUMIN PA expresion PYC COR_A lista_factores . COR_C PC
+   28 lista_factores: lista_factores . COMA equfactor
+
+    COMA   desplazar e ir al estado 124
+    COR_C  desplazar e ir al estado 126
+
+
+estado 122
 
     3 programa: programa . sentencia
-   22 condicional: IF PA condicion PC THEN programa ELSE programa . ENDIF
+   24 condicional: IF PA equ PC THEN programa ELSE programa . ENDIF
 
     WHILE    desplazar e ir al estado 1
     IF       desplazar e ir al estado 2
-    ENDIF    desplazar e ir al estado 93
+    ENDIF    desplazar e ir al estado 127
     GET      desplazar e ir al estado 3
     DISPLAY  desplazar e ir al estado 4
     DIM      desplazar e ir al estado 5
@@ -1180,8 +1536,85 @@ estado 92
     iteracion              ir al estado 16
 
 
-estado 93
+estado 123
+
+    3 programa: programa . sentencia
+   22 condicional: IF PA condicion PC THEN programa ELSE programa . ENDIF
+
+    WHILE    desplazar e ir al estado 1
+    IF       desplazar e ir al estado 2
+    ENDIF    desplazar e ir al estado 128
+    GET      desplazar e ir al estado 3
+    DISPLAY  desplazar e ir al estado 4
+    DIM      desplazar e ir al estado 5
+    ID       desplazar e ir al estado 6
+
+    sentencia              ir al estado 28
+    dec_var                ir al estado 10
+    asignacion             ir al estado 11
+    lista_de_asignaciones  ir al estado 12
+    impresion              ir al estado 13
+    lectura                ir al estado 14
+    condicional            ir al estado 15
+    iteracion              ir al estado 16
+
+
+estado 124
+
+   28 lista_factores: lista_factores COMA . equfactor
+
+    ID        desplazar e ir al estado 117
+    CTE_ENT   desplazar e ir al estado 22
+    CTE_REAL  desplazar e ir al estado 23
+
+    equfactor      ir al estado 129
+    constante_num  ir al estado 120
+
+
+estado 125
+
+   25 equ: EQUMAX PA expresion PYC COR_A lista_factores COR_C . PC
+
+    PC  desplazar e ir al estado 130
+
+
+estado 126
+
+   26 equ: EQUMIN PA expresion PYC COR_A lista_factores COR_C . PC
+
+    PC  desplazar e ir al estado 131
+
+
+estado 127
+
+   24 condicional: IF PA equ PC THEN programa ELSE programa ENDIF .
+
+    $default  reduce usando la regla 24 (condicional)
+
+
+estado 128
 
    22 condicional: IF PA condicion PC THEN programa ELSE programa ENDIF .
 
     $default  reduce usando la regla 22 (condicional)
+
+
+estado 129
+
+   28 lista_factores: lista_factores COMA equfactor .
+
+    $default  reduce usando la regla 28 (lista_factores)
+
+
+estado 130
+
+   25 equ: EQUMAX PA expresion PYC COR_A lista_factores COR_C PC .
+
+    $default  reduce usando la regla 25 (equ)
+
+
+estado 131
+
+   26 equ: EQUMIN PA expresion PYC COR_A lista_factores COR_C PC .
+
+    $default  reduce usando la regla 26 (equ)

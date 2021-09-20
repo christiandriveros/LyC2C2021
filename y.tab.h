@@ -52,32 +52,35 @@
      T_INT = 268,
      T_FLOAT = 269,
      T_STRING = 270,
-     ID = 271,
-     CTE_STRING = 272,
-     CTE_ENT = 273,
-     CTE_REAL = 274,
-     OP_SUM = 275,
-     OP_RES = 276,
-     OP_MULT = 277,
-     OP_DIV = 278,
-     OP_ASIG = 279,
-     OP_MAY = 280,
-     OP_MAY_IG = 281,
-     OP_MEN = 282,
-     OP_MEN_IG = 283,
-     OP_IGUAL = 284,
-     OP_DIST = 285,
-     OP_AND = 286,
-     OP_OR = 287,
-     OP_NOT = 288,
-     PA = 289,
-     PC = 290,
-     PYC = 291,
-     COMA = 292,
-     DOS_PUNT = 293,
-     COR_A = 294,
-     COR_C = 295,
-     MENOS_UNARIO = 296
+     EQUMAX = 271,
+     EQUMIN = 272,
+     LONG = 273,
+     ID = 274,
+     CTE_STRING = 275,
+     CTE_ENT = 276,
+     CTE_REAL = 277,
+     OP_SUM = 278,
+     OP_RES = 279,
+     OP_MULT = 280,
+     OP_DIV = 281,
+     OP_ASIG = 282,
+     OP_MAY = 283,
+     OP_MAY_IG = 284,
+     OP_MEN = 285,
+     OP_MEN_IG = 286,
+     OP_IGUAL = 287,
+     OP_DIST = 288,
+     OP_AND = 289,
+     OP_OR = 290,
+     OP_NOT = 291,
+     PA = 292,
+     PC = 293,
+     PYC = 294,
+     COMA = 295,
+     DOS_PUNT = 296,
+     COR_A = 297,
+     COR_C = 298,
+     MENOS_UNARIO = 299
    };
 #endif
 /* Tokens.  */
@@ -94,32 +97,35 @@
 #define T_INT 268
 #define T_FLOAT 269
 #define T_STRING 270
-#define ID 271
-#define CTE_STRING 272
-#define CTE_ENT 273
-#define CTE_REAL 274
-#define OP_SUM 275
-#define OP_RES 276
-#define OP_MULT 277
-#define OP_DIV 278
-#define OP_ASIG 279
-#define OP_MAY 280
-#define OP_MAY_IG 281
-#define OP_MEN 282
-#define OP_MEN_IG 283
-#define OP_IGUAL 284
-#define OP_DIST 285
-#define OP_AND 286
-#define OP_OR 287
-#define OP_NOT 288
-#define PA 289
-#define PC 290
-#define PYC 291
-#define COMA 292
-#define DOS_PUNT 293
-#define COR_A 294
-#define COR_C 295
-#define MENOS_UNARIO 296
+#define EQUMAX 271
+#define EQUMIN 272
+#define LONG 273
+#define ID 274
+#define CTE_STRING 275
+#define CTE_ENT 276
+#define CTE_REAL 277
+#define OP_SUM 278
+#define OP_RES 279
+#define OP_MULT 280
+#define OP_DIV 281
+#define OP_ASIG 282
+#define OP_MAY 283
+#define OP_MAY_IG 284
+#define OP_MEN 285
+#define OP_MEN_IG 286
+#define OP_IGUAL 287
+#define OP_DIST 288
+#define OP_AND 289
+#define OP_OR 290
+#define OP_NOT 291
+#define PA 292
+#define PC 293
+#define PYC 294
+#define COMA 295
+#define DOS_PUNT 296
+#define COR_A 297
+#define COR_C 298
+#define MENOS_UNARIO 299
 
 
 

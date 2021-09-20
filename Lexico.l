@@ -33,7 +33,9 @@ THEN				(t|T)(h|H)(e|E)(n|N)
 ELSE 				(e|E)(l|L)(s|S)(e|E)
 ENDIF				(e|E)(n|N)(d|D)(i|I)(f|F)
 
-
+LONG				(l|L)(o|O)(n|N)(g|G)
+EQUMAX				(e|E)(q|Q)(u|U)(m|M)(a|A)(x|X)
+EQUMIN				(e|E)(q|Q)(u|U)(m|M)(i|I)(n|N)
 GET 				(g|G)(e|E)(t|T)
 DISPLAY 			(d|D)(i|I)(s|S)(p|P)(l|L)(a|A)(y|Y)
 
@@ -67,7 +69,6 @@ OP_RES              "\-"
 OP_MULT             "\*"
 OP_DIV              "\/"
 OP_ASIG             ":="
-
 OP_MAY 				">"
 OP_MAY_IG 			">="
 OP_MEN 				"<"
@@ -109,7 +110,9 @@ COR_C				"]"
 {ENDWHILE}			{ return ENDWHILE; }
 
 
-
+{LONG}			{ return LONG; }
+{EQUMAX}		{return EQUMAX; }
+{EQUMIN}		{return EQUMIN; }
 {GET}			{ return GET; }
 {DISPLAY} 			{  return DISPLAY; }
 
