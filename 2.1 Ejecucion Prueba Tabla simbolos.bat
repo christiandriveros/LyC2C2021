@@ -1,0 +1,1 @@
+Segunda.exe prueba_TS.txt

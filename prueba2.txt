@@ -1,0 +1,9 @@
+*/ PRUEBA DECLARACION DE VARIABLES /*
+
+
+DIM [ var1, var2, svar3 ] AS [ FLOAT, INT, string]
+DIM [ svar ] AS [string]
+
+*/ PRUEBA ASIGNACION MULTIPLE /*
+
+var1:= var2:= (10*55+2) 

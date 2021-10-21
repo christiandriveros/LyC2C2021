@@ -1,3 +1,10 @@
+
+*/ PRUEBA DECLARACION DE VARIABLES /*
+
+
+DIM [ var1, var2, svar3 ] AS [ FLOAT, INT, string]
+DIM [ svar ] AS [string]
+
 */PRUEBA TEMAS ESPECIALES: EQUMAX, EQUMIN, LONGITUD /*
 
 */ PRUEBA LONGITUD /*
@@ -147,11 +154,7 @@ DISPLAY var1
 GET base
 
 
-*/ PRUEBA DECLARACION DE VARIABLES /*
 
-
-DIM [ var1, var2, svar3 ] AS [ FLOAT, INT, string]
-DIM [ svar ] AS [string]
 
 
 */ PRUEBA ASIGNACION MULTIPLE /*
