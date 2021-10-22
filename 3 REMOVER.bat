@@ -3,4 +3,5 @@ del /f "y.output"
 del /f "y.tab.c"
 del /f "y.tab.h"
 del /f "ts.txt"
-del /f Primera.exe
+del /f "intermedia.txt"
+del /f Segunda.exe

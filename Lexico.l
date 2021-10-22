@@ -5,16 +5,35 @@
 #include <errno.h>
 #include <math.h>
 #include <float.h>
+#include <conio.h>
 #include "y.tab.h"
-#include "ts.h"
-
 #define LONG_MAX_CTE_STRING 30
 #define MAX_NUM_ENT  32767
 #define LONG_MAX_ID  30
+#define TRUE 1
+#define FALSE 0
+
+typedef struct{
+char nombre[100];
+char tipo[100];
+char valor[100];
+char longitud[100];
+}t_lexema;
+
+typedef struct s_nodo{
+t_lexema lex;
+struct s_nodo *sig;
+}t_nodo_l;
+
+typedef t_nodo_l* t_lista;
+
+
+extern t_lista listaTS;
 
 FILE *yyin;
-int yylval;
 char *yyltext;
+
+void agregar_lexema(char* nombre, char* tipo, char *valor, char *longitud);
 
 void errorLexico(char* mensaje);
 /// PALABRAS RESERVADAS
@@ -169,14 +188,14 @@ COR_C				"]"
 					int base= 10;
 					if( longitud_string > LONG_MAX_CTE_STRING )
 					{
-						sprintf(mensaje, 
-						"ERROR LEXICO: Linea %d: Constante string %s: Longitud maxima de caracteres superada %d.",yylineno, yytext, LONG_MAX_CTE_STRING );
+						sprintf(mensaje, "ERROR LEXICO:Linea %d: Constante String %s: Ha superado la longitud Maxima de Caracteres %d.",yylineno, yytext, LONG_MAX_CTE_STRING );
 						errorLexico(mensaje);
 					}
 					else
 					{
 						itoa(longitud_string, cad_long, base);
-						agregar_lexema("" , "" ,yytext , cad_long);
+						agregar_lexema(yytext , "" ,yytext , cad_long);
+						strcpy(yylval.str_val, yytext);
 						return CTE_STRING;
 					}
                  }
@@ -193,7 +212,8 @@ COR_C				"]"
                    		}
                    		else
                     	{
-							agregar_lexema("","",yytext,"");
+							agregar_lexema(yytext,"",yytext,"");
+							strcpy(yylval.str_val, yytext);
                     		return CTE_REAL;
                     	}
                     }
@@ -213,7 +233,8 @@ COR_C				"]"
                     	}
                     	else
                     	{
-							agregar_lexema("","",yytext,"");
+							agregar_lexema(yytext,"",yytext,"");
+							strcpy(yylval.str_val, yytext);
                     		return CTE_ENT;
                     	}
 					}
@@ -229,6 +250,7 @@ COR_C				"]"
 						else
 						{
 							agregar_lexema(yytext,"","","");
+							strcpy(yylval.str_val, yytext);
 							return ID;	
 						}
 						
@@ -249,7 +271,26 @@ COR_C				"]"
 
 %%
 
+
+void agregar_lexema(char* nombreLexema, char* tipo, char *valor, char *longitud)
+{
+	t_lexema lexema;
+	strcpy(lexema.nombre, nombreLexema);
+	strcpy(lexema.tipo, tipo);
+	strcpy(lexema.valor, valor);
+	strcpy(lexema.longitud, longitud);
+	t_lexema lexAux; 
+	if( buscar_en_lista (&listaTS, nombreLexema, &lexAux) == FALSE)
+	{
+		insertar_en_lista (&listaTS, &lexema);
+	}
+	
+
+}
+
 void errorLexico(char* mensaje)
 {
 	printf("%s",mensaje);
+	exit(0);
 }
+
