@@ -2,14 +2,15 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <conio.h>
-#include "pila_ids.h"
-#include "pila_tipos.h"
+#include "pila.h"
 #include "lista.h"
 
 
 int yystopparser=0;
 FILE* yyin;
 
+///    ts      ///
+void imprimir_tabla_de_simbolos_en_archivo();
 void crear_tabla_simbolos();
 void borrar_tabla_simbolos();
 
@@ -26,22 +27,24 @@ void escribir_en_celda(int pos, int valor);
 
 t_lista listaTS;
 
-/// VARIABLES PARA ANALISIS SEMANTICO ///////
+///DE TODO UN POCO  ///////
 int posicion_celda_actual=0;
 void apilar_id_para_tipificar (char *id);
 void tipificar_ids_en_tabla_de_simbolos();
 void apilar_tipos_datos (char *dato);
 
+
+
 /// PILAS PARA DECLARACION DE VARIABLES //////
-t_pila_ids pila_de_ids_declaracion; 
-t_pila_tipos pila_de_tipos_declaracion; 
+t_pila  pila_de_ids_declaracion; 
+t_pila  pila_de_tipos_declaracion; 
 
 
 /// FUNCIONES PARA ASIGNACION ////////
 void realizar_asignacion();
 
 /// VARIABLES PARA ASIGNACION ///////
-	t_pila_ids pila_de_ids_asig;
+	t_pila  pila_de_ids_asig;
 	char tipo_dato_asig [30];
 
 /// ERROR SEMANTICO ///////////////
@@ -145,17 +148,16 @@ sentencia:		dec_var						{ printf("\n<sentencia> -> <declaracion de variables>")
 
 
 dec_var:	DIM COR_A lista_simetrica COR_C				  	{ printf("\n<dec_var> -> DIM COR_A <lista_simetrica> COR_C"); 
-																tipificar_ids_en_tabla_de_simbolos();}
+																tipificar_ids_en_tabla_de_simbolos();
+}
 ;
 
 lista_simetrica: ID COMA lista_simetrica COMA tipo_dato		{ printf("\n<lista_simetrica> -> ID COMA <lista_simetrica> COMA <tipo_dato> ");
-																apilar_id_para_tipificar(yylval.str_val);
-																insertar_en_polaca( yylval.str_val );
+																apilar_id_para_tipificar($1);																
 																}
 ;
 lista_simetrica: ID COR_C AS COR_A tipo_dato			{ printf("\n<lista_simetrica> -> ID COR_C AS COR_A <tipo_dato> "); 
-																apilar_id_para_tipificar(yylval.str_val);
-																insertar_en_polaca( yylval.str_val );
+																apilar_id_para_tipificar($1);
 																
 																}
 ;
@@ -166,11 +168,29 @@ tipo_dato: T_INT 														{ printf("\n<tipo_dato> -> T_INT"); apilar_tipos_
 ;
 
 
-asignacion:		lista_de_asignaciones OP_ASIG expresion 					{ printf("\n<asignacion> -> <lista_de_asignaciones> OP_ASIG <expresion>"); }
+asignacion:		lista_de_asignaciones OP_ASIG expresion 					{insertar_en_polaca("@aux_asig");}	
+																			{ printf("\n<asignacion> -> <lista_de_asignaciones> OP_ASIG <expresion>"); 
+																			insertar_en_polaca(":=");
+																			strcpy(tipo_dato_asig, "numerico");
+																			realizar_asignacion();
+																			}
 ;
 
-lista_de_asignaciones:		ID 												{ printf("\n<lista_de_asignaciones> -> ID");insertar_en_polaca( yylval.str_val ); }
-						| lista_de_asignaciones OP_ASIG ID 					{ printf("\n<lista_de_asignaciones> -> <lista_de_asignaciones> OP_ASIG ID");insertar_en_polaca( yylval.str_val ); }
+asignacion:		lista_de_asignaciones OP_ASIG CTE_STRING 								
+																			{ printf("\n<asignacion> --> <lista_de_asignaciones> OP_ASIG <CONST_STRING>");
+																			  insertar_en_polaca("@aux_asig");
+																			  insertar_en_polaca($3);
+																			  insertar_en_polaca(":=");
+																			  strcpy(tipo_dato_asig, "string");
+																			  realizar_asignacion();
+																			}
+;
+
+lista_de_asignaciones:		ID 												{ printf("\n<lista_de_asignaciones> -> ID"); 
+																			apilar( &pila_de_ids_asig, yylval.str_val);
+																			}
+						| lista_de_asignaciones OP_ASIG ID 					{ printf("\n<lista_de_asignaciones> -> <lista_de_asignaciones> OP_ASIG ID");
+																			apilar( &pila_de_ids_asig, yylval.str_val); }
 ;
 
 
@@ -225,47 +245,79 @@ condicion_simple:	comparacion 											{ printf("\n<condicion_simple> -> <comp
 comparacion:	expresion comparador expresion 								{ printf("\n<comparacion> -> <expresion> <comparador> <expresion>"); }
 ;
 
-comparador:		OP_MEN 											{ printf("\n<comparador> -> <"); } 								
-				|OP_MAY 										{ printf("\n<comparador> -> >"); }
-				|OP_MEN_IG 										{ printf("\n<comparador> -> <="); }
-				|OP_MAY_IG 										{ printf("\n<comparador> -> >="); }
-				|OP_IGUAL 										{ printf("\n<comparador> -> =="); }
-				|OP_DIST										{ printf("\n<comparador> -> !="); }
+comparador:		OP_MEN 											{ printf("\n<comparador> -> <"); 
+																	insertar_en_polaca("CMP");
+																	 insertar_en_polaca("BGE");
+																	 apilar_celda_actual();
+																	  avanzar();} 		
+																	  
+				|OP_MAY 										{ printf("\n<comparador> -> >");
+																 insertar_en_polaca("CMP");
+																  insertar_en_polaca("BLE");
+																  apilar_celda_actual();
+																  avanzar(); }
+																  
+				|OP_MEN_IG 										{ printf("\n<comparador> -> <=");
+																 insertar_en_polaca("CMP");
+																  insertar_en_polaca("JA");
+																  apilar_celda_actual();
+																  avanzar();  }
+																  
+				|OP_MAY_IG 										{ printf("\n<comparador> -> >=");
+																 insertar_en_polaca("CMP");
+																  insertar_en_polaca("JB");
+																  apilar_celda_actual();
+																  avanzar();
+																  }
+																  
+				|OP_IGUAL 										{ printf("\n<comparador> -> ==");
+																 insertar_en_polaca("CMP");
+																  insertar_en_polaca("JNE");
+																  apilar_celda_actual();
+																  avanzar(); }
+																  
+				|OP_DIST										{ printf("\n<comparador> -> !=");
+																 insertar_en_polaca("CMP");
+																 insertar_en_polaca("JE");
+																 apilar_celda_actual();
+																 avanzar(); }
 ;
 
 
-expresion:		expresion OP_SUM termino  						{ printf("\n<expresion> -> <expresion> + <termino>"); }
-				| expresion OP_RES termino 						{ printf("\n<expresion> -> <expresion> - <termino>"); }
+expresion:		expresion OP_SUM termino  						{ printf("\n<expresion> -> <expresion> + <termino>");insertar_en_polaca("+"); }
+				| expresion OP_RES termino 						{ printf("\n<expresion> -> <expresion> - <termino>");insertar_en_polaca("-"); }
 				| termino 										{ printf("\n<expresion> -> <termino>"); }
 				| LONG PA COR_A lista_id COR_C PC				{ printf("\n<expresion> -> LONG PA COR_A <lista_id> COR_C PC"); }
 ;
 
-expresion: 		OP_RES expresion  %prec MENOS_UNARIO 			{ printf("\n<expresion> -> OP_RES <expresion>"); }
+expresion: 		OP_RES expresion  %prec MENOS_UNARIO 			{ printf("\n<expresion> -> OP_RES <expresion>");
+																	insertar_en_polaca("-1");
+																	insertar_en_polaca("*"); }
 ; 					
 
 lista_id: 	ID												{ printf("\n<lista_id> -> ID");insertar_en_polaca( yylval.str_val ); }
 			|lista_id COMA ID 								{ printf("\n<lista_id> -> lista_id COMA ID");insertar_en_polaca( yylval.str_val ); }
 
 
-termino:		termino OP_MULT factor 							{ printf("\n<termino> -> <termino> * <factor>"); }
-				| termino OP_DIV factor 						{ printf("\n<termino> -> <termino> / <factor>"); }
+termino:		termino OP_MULT factor 							{ printf("\n<termino> -> <termino> * <factor>"); insertar_en_polaca("*"); }
+				| termino OP_DIV factor 						{ printf("\n<termino> -> <termino> / <factor>");insertar_en_polaca("/"); }
 				| factor 										{ printf("\n<termino> -> <factor>"); }
 ;
 
 factor:			PA expresion PC  								{ printf("\n<factor> -> ( <expresion> )"); }
 				| constante 									{ printf("\n<factor> -> constante "); }
-				| ID 											{ printf("\n<factor> -> ID ");insertar_en_polaca( yylval.str_val ); }
+				| ID 											{ printf("\n<factor> -> ID ");insertar_en_polaca( $1 ); }
 				
 ;
 
 
 
 constante:		constante_num   		{ printf("\n<constante> -> <constante_num>"); }
-				| CTE_STRING  		{ printf("\n<constante> -> CTE_STRING");insertar_en_polaca( yylval.str_val ); }
+				| CTE_STRING  		{ printf("\n<constante> -> CTE_STRING");insertar_en_polaca( $1 ); }
 ;
 
-constante_num:	CTE_ENT   			{ printf("\n<constante_num> -> CTE_ENT");insertar_en_polaca( yylval.str_val ); }
-				| CTE_REAL			{ printf("\n<constante_num> -> CTE_REAL");insertar_en_polaca( yylval.str_val ); }
+constante_num:	CTE_ENT   			{ printf("\n<constante_num> -> CTE_ENT");insertar_en_polaca( $1 ); }
+				| CTE_REAL			{ printf("\n<constante_num> -> CTE_REAL");insertar_en_polaca( $1 ); }
 ;
 
 
@@ -335,12 +387,12 @@ void escribir_en_celda(int pos, int valor)
 
 void apilar_id_para_tipificar (char *dato)
 {
-	apilar_ids( &pila_de_ids_declaracion, dato);
+	apilar ( &pila_de_ids_declaracion, dato);
 }
 
 void apilar_tipos_datos (char *dato)
 {
-	apilar_tipos( &pila_de_tipos_declaracion, dato);
+	apilar ( &pila_de_tipos_declaracion, dato);
 }
 
 // agrega el tipo del dato al lexema dentro de la TS
@@ -350,10 +402,10 @@ void tipificar_ids_en_tabla_de_simbolos()
 	char tipo_d [100];
 	int resultado_de_tipificar_id;
 	int resultado;
-	while( ! pila_vacia_ids( &pila_de_ids_declaracion ) )
+	while( ! pila_vacia ( &pila_de_ids_declaracion ) )
 	{
-		desapilar_ids( &pila_de_ids_declaracion, id);
-		desapilar_tipos( &pila_de_tipos_declaracion, tipo_d);
+		desapilar ( &pila_de_tipos_declaracion, tipo_d);
+		desapilar ( &pila_de_ids_declaracion, id);
 		printf("\n****%s   ",id);
 		printf("\n****%s  \n ",tipo_d);
 		resultado=asignar_tipo_a_lexema(&listaTS, id, tipo_d);
@@ -367,24 +419,24 @@ void tipificar_ids_en_tabla_de_simbolos()
 		}
 	}
 }
-
 //// FUNCIONALIDADES DE ASIGNACION 
 void realizar_asignacion()
 {
 	char id[100];
 	char mensaje [300];
 	t_lexema lexema_id;
-	while( ! pila_vacia_ids(&pila_de_ids_declaracion) )
+	while( ! pila_vacia(&pila_de_ids_asig) )
 	{
-		desapilar_ids(&pila_de_ids_declaracion, id );
+		desapilar(&pila_de_ids_asig, id );
 		if( buscar_en_lista (&listaTS, id, &lexema_id) == TRUE )
 		{
 			if( strcmp(tipo_dato_asig, "string" )==0 )
 			{
 				if( strcmp(lexema_id.tipo, "string") == 0 )
 				{
+					insertar_en_polaca("@aux_asig");
 					insertar_en_polaca(id);
-					insertar_en_polaca("@aux_asig");					
+										
 					insertar_en_polaca(":=");
 				}
 				else
@@ -397,21 +449,19 @@ void realizar_asignacion()
 			{
 				if( strcmp(lexema_id.tipo, "int") == 0 || strcmp(lexema_id.tipo, "float") == 0  )
 				{
+					insertar_en_polaca("@aux_asig");
 					insertar_en_polaca(id);
-					insertar_en_polaca("@aux_asig");					
+									
 					insertar_en_polaca(":=");
 				}
 				else
 				{
-					sprintf(mensaje, "Error: Tipos de Dato Diferentes: Esta intentando asignar a %s un tipo de dato diferente al de su declaracion.", lexema_id.nombre);
+						sprintf(mensaje, "Error: Tipos de Dato Diferentes: Esta intentando asignar a %s un tipo de dato diferente al de su declaracion.", lexema_id.nombre);
 					errorSemantico(mensaje);
 				}		
 			}
 
 		}
-		
-		
-		
 
 	}
 }
@@ -420,9 +470,9 @@ void inicializar_variables_y_archivos_de_compilacion()
 {
 	crear_lista(&listaTS);
     crear_archivo_para_codigo_intermedio();
-	crear_pila_ids(&pila_de_ids_declaracion);
-	crear_pila_tipos(&pila_de_tipos_declaracion);
-	crear_pila_ids(&pila_de_ids_asig);
+	crear_pila (&pila_de_ids_declaracion);
+	crear_pila (&pila_de_tipos_declaracion);
+	crear_pila (&pila_de_ids_asig);
 
 }
 
@@ -464,6 +514,7 @@ int main (int argc, char *argv[])
     {
 		crear_tabla_simbolos();
         yyparse();
+		imprimir_tabla_de_simbolos_en_archivo();
     }
     fclose(yyin);
     return 0;

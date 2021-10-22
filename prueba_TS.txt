@@ -1,5 +1,5 @@
-z:=32
-DIM [ vaaaa ,beee  ] AS [INT , STRING]
+
+DIM [ vaaaa , BEEE ] AS [INT , STRING]
 
 
-
+ BEEE := 24+50*33

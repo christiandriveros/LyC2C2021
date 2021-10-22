@@ -1,18 +1,20 @@
-#ifndef PILA_H_INCLUDED
-#define PILA_H_INCLUDED
+#ifndef PILA_ids_H_INCLUDED
+#define PILA_ids_H_INCLUDED
 #define TRUE 1
 #define FALSE 0
+#include <string.h>
 typedef struct s_nodo_ids
 {
-    int valor;
+    char cad[100];
     struct s_nodo_ids* anterior;
 }t_nodo_ids;
 
 typedef t_nodo_ids* t_pila_ids;
 
+
 void crear_pila_ids(t_pila_ids *dirPila);
-int apilar_ids( t_pila_ids* dirPila, char* valor);
-int desapilar_ids( t_pila_ids* dirPila, char* valor);
+int apilar_ids( t_pila_ids* dirPila, char* cad);
+int desapilar_ids( t_pila_ids* dirPila, char* cad);
 int pila_vacia_ids ( t_pila_ids *dirPila);
 
 void crear_pila_ids(t_pila_ids *dirPila)
@@ -20,25 +22,25 @@ void crear_pila_ids(t_pila_ids *dirPila)
     *dirPila = NULL;
 }
 
-int apilar_ids( t_pila_ids* dirPila, char *valor)
+int apilar_ids( t_pila_ids* dirPila, char *cad)
 {
     t_nodo_ids *nueNodo = (t_nodo_ids*)malloc(sizeof(t_nodo_ids));
     if( ! nueNodo )
     {
         return FALSE;
     }
-    nueNodo->valor= *valor;
+    strcpy(nueNodo->cad, cad);
     nueNodo->anterior = *dirPila;
     *dirPila=nueNodo;
     return TRUE;
 }
 
-int desapilar_ids( t_pila_ids* dirPila, char* valor)
+int desapilar_ids( t_pila_ids* dirPila, char* cad)
 {
     t_nodo_ids *dirNodoElim;
     if(*dirPila == NULL)
         return FALSE;
-    *valor = (*dirPila)->valor;
+     strcpy(cad, (*dirPila)->cad);
      dirNodoElim= *dirPila;
      *dirPila = (*dirPila)->anterior;
      free(dirNodoElim);
@@ -52,4 +54,5 @@ int pila_vacia_ids ( t_pila_ids *dirPila)
     return FALSE;
 }
 
-#endif // PILA_H_INCLUDED
+
+#endif // PILA_STRINGS_H_INCLUDED

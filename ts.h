@@ -5,19 +5,23 @@
 #include <stdio.h>
 #define READ_FILE "r"
 #define APPEND_FILE "a"
+#define READ_AND_WRITE_FILE "r+"
+#define LEXEMA_TIPIFICADO 1
+#define LEXEMA_YA_ESTABA_DECLARADO 2
+#define LEXEMA_NO_ENCONTRADO 0
 
-void crear_tabla_s(FILE *fp)
+void inicializar_tab_simb(FILE *fp)
 {
     fprintf(fp, "%s||%s||%s||%s\n", "NOMBRE", "TIPO", "VALOR", "LONGITUD");
 }
 
-void guardar_lexema(char *text, char *type, char *value, char *length)
+void guardar_en_tab_simb(char *text, char *type, char *value, char *length)
 {
     FILE *fp = fopen("ts.txt", READ_FILE);
     if (!fp)
     {
         fp = fopen("ts.txt", APPEND_FILE);
-        crear_tabla_s(fp);
+        inicializar_tab_simb(fp);
         fprintf(fp, "%s||%s||%s||%s\n", text, type, value, length);
         fclose(fp);
     }
@@ -29,7 +33,7 @@ void guardar_lexema(char *text, char *type, char *value, char *length)
     }
 }
 
-int buscar_lexema(char *text){
+int buscar_lexema_en_tab_simb(char *text){
 
 	char buffer [300];
 	FILE *fp = fopen("ts.txt", READ_FILE);
@@ -50,13 +54,13 @@ int buscar_lexema(char *text){
 	return 0;
 }
 
-void agregar_lexema(char *text, char *type, char *value, char *length)
+void incluir_lexema_en_tab_simb(char *text, char *type, char *value, char *length)
 {
 	char nue_lexema [300];
 	sprintf(nue_lexema, "%s||%s||%s||%s", text, type, value, length);
-	if (buscar_lexema(nue_lexema) == 0)
+	if (buscar_lexema_en_tab_simb(nue_lexema) == 0)
 	{
-		guardar_lexema(text,type,value,length);
+		guardar_en_tab_simb(text,type,value,length);
 	}
 }
 
@@ -64,5 +68,5 @@ void destruir_tab_simb()
 {
 	remove("ts.txt");
 }
-
+	
 #endif // TS_H_INCLUDED

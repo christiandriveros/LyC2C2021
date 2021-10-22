@@ -1,3 +1,3 @@
 bison -dyv Sintactico.y
 flex Lexico.l
-gcc.exe lex.yy.c y.tab.c -o Primera.exe
+gcc.exe lex.yy.c y.tab.c -o Segunda.exe
