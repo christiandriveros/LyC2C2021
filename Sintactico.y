@@ -4,6 +4,7 @@
 #include <conio.h>
 #include "pila.h"
 #include "lista.h"
+#include "coladinamica.h"
 
 
 int yystopparser=0;
@@ -29,14 +30,14 @@ t_lista listaTS;
 
 ///DE TODO UN POCO  ///////
 int posicion_celda_actual=0;
-void apilar_id_para_tipificar (char *id);
+void encolar_id_para_tipificar (char *id);
 void tipificar_ids_en_tabla_de_simbolos();
 void apilar_tipos_datos (char *dato);
 
 
 
 /// PILAS PARA DECLARACION DE VARIABLES //////
-t_pila  pila_de_ids_declaracion; 
+t_cola  cola_de_ids_declaracion; 
 t_pila  pila_de_tipos_declaracion; 
 
 
@@ -44,7 +45,7 @@ t_pila  pila_de_tipos_declaracion;
 void realizar_asignacion();
 
 /// VARIABLES PARA ASIGNACION ///////
-	t_pila  pila_de_ids_asig;
+	t_cola  cola_de_ids_asig;
 	char tipo_dato_asig [30];
 
 /// ERROR SEMANTICO ///////////////
@@ -153,12 +154,13 @@ dec_var:	DIM COR_A lista_simetrica COR_C				  	{ printf("\n<dec_var> -> DIM COR_
 ;
 
 lista_simetrica: ID COMA lista_simetrica COMA tipo_dato		{ printf("\n<lista_simetrica> -> ID COMA <lista_simetrica> COMA <tipo_dato> ");
-																apilar_id_para_tipificar($1);																
+																//apilar_id_para_tipificar($1);		
+																encolar_id_para_tipificar($1);
 																}
 ;
 lista_simetrica: ID COR_C AS COR_A tipo_dato			{ printf("\n<lista_simetrica> -> ID COR_C AS COR_A <tipo_dato> "); 
-																apilar_id_para_tipificar($1);
-																
+																//apilar_id_para_tipificar($1);
+																encolar_id_para_tipificar($1);
 																}
 ;
 
@@ -187,10 +189,10 @@ asignacion:		lista_de_asignaciones OP_ASIG CTE_STRING
 ;
 
 lista_de_asignaciones:		ID 												{ printf("\n<lista_de_asignaciones> -> ID"); 
-																			apilar( &pila_de_ids_asig, yylval.str_val);
+																			encolar( &cola_de_ids_asig, yylval.str_val);
 																			}
 						| lista_de_asignaciones OP_ASIG ID 					{ printf("\n<lista_de_asignaciones> -> <lista_de_asignaciones> OP_ASIG ID");
-																			apilar( &pila_de_ids_asig, yylval.str_val); }
+																			encolar( &cola_de_ids_asig, yylval.str_val); }
 ;
 
 
@@ -323,23 +325,6 @@ constante_num:	CTE_ENT   			{ printf("\n<constante_num> -> CTE_ENT");insertar_en
 
 
 %%
-
-void crear_tabla_simbolos()
-{
-	FILE * ts= fopen("ts.txt", "wt" );
-	fprintf(ts, "%s||%s||%s||%s\n", "NOMBRE", "TIPO", "VALOR", "LONGITUD");
-	fclose(ts);
-}
-
-
-void borrar_tabla_simbolos()
-{
-	remove("ts.txt");
-}
-
-
-
-
 /// GENERACION DE CODIGO INTER-MEDIO //////////////////
 
 void crear_archivo_para_codigo_intermedio()
@@ -385,10 +370,17 @@ void escribir_en_celda(int pos, int valor)
 
 /// FUNCIONALIDADES DE DECLARACION DE VARIABLES
 
-void apilar_id_para_tipificar (char *dato)
+/*void apilar_id_para_tipificar (char *dato)
 {
 	apilar ( &pila_de_ids_declaracion, dato);
+}*/
+
+void encolar_id_para_tipificar (char *dato)
+{
+	encolar ( &cola_de_ids_declaracion, dato);
 }
+
+
 
 void apilar_tipos_datos (char *dato)
 {
@@ -402,10 +394,10 @@ void tipificar_ids_en_tabla_de_simbolos()
 	char tipo_d [100];
 	int resultado_de_tipificar_id;
 	int resultado;
-	while( ! pila_vacia ( &pila_de_ids_declaracion ) )
+	while( ! colaVacia ( &cola_de_ids_declaracion ) )
 	{
 		desapilar ( &pila_de_tipos_declaracion, tipo_d);
-		desapilar ( &pila_de_ids_declaracion, id);
+		desacolar ( &cola_de_ids_declaracion, id);
 		printf("\n****%s   ",id);
 		printf("\n****%s  \n ",tipo_d);
 		resultado=asignar_tipo_a_lexema(&listaTS, id, tipo_d);
@@ -425,9 +417,9 @@ void realizar_asignacion()
 	char id[100];
 	char mensaje [300];
 	t_lexema lexema_id;
-	while( ! pila_vacia(&pila_de_ids_asig) )
+	while( ! colaVacia(&cola_de_ids_asig) )
 	{
-		desapilar(&pila_de_ids_asig, id );
+		desacolar(&cola_de_ids_asig, id );
 		if( buscar_en_lista (&listaTS, id, &lexema_id) == TRUE )
 		{
 			if( strcmp(tipo_dato_asig, "string" )==0 )
@@ -470,9 +462,9 @@ void inicializar_variables_y_archivos_de_compilacion()
 {
 	crear_lista(&listaTS);
     crear_archivo_para_codigo_intermedio();
-	crear_pila (&pila_de_ids_declaracion);
+	crearCola (&cola_de_ids_declaracion);
 	crear_pila (&pila_de_tipos_declaracion);
-	crear_pila (&pila_de_ids_asig);
+	crearCola (&cola_de_ids_asig);
 
 }
 
@@ -480,6 +472,19 @@ void inicializar_variables_y_archivos_de_compilacion()
 void imprimir_tabla_de_simbolos_en_archivo()
 {
 	volcar_lista_a_tabla_de_simbolos(&listaTS);
+}
+
+void crear_tabla_simbolos()
+{
+	FILE * ts= fopen("ts.txt", "wt" );
+	fprintf(ts, "%s||%s||%s||%s\n", "NOMBRE", "TIPO", "VALOR", "LONGITUD");
+	fclose(ts);
+}
+
+
+void borrar_tabla_simbolos()
+{
+	remove("ts.txt");
 }
 
 

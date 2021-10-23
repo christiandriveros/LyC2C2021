@@ -7,11 +7,13 @@
 #include <float.h>
 #include <conio.h>
 #include "y.tab.h"
+//#include "lista.h"
 #define LONG_MAX_CTE_STRING 30
 #define MAX_NUM_ENT  32767
 #define LONG_MAX_ID  30
 #define TRUE 1
 #define FALSE 0
+
 
 typedef struct{
 char nombre[100];
@@ -34,6 +36,8 @@ FILE *yyin;
 char *yyltext;
 
 void agregar_lexema(char* nombre, char* tipo, char *valor, char *longitud);
+int buscar_en_lista (t_lista *dirLista, char *nombre, t_lexema *dirLexema);
+int insertar_en_lista (t_lista *dirLista, t_lexema *lexema);
 
 void errorLexico(char* mensaje);
 /// PALABRAS RESERVADAS

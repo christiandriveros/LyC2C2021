@@ -8,9 +8,9 @@ typedef struct s_nodo_pila
 {
     char cad[100];
     struct s_nodo_pila* anterior;
-}t_nodo;
+}t_nodo_pila;
 
-typedef t_nodo* t_pila;
+typedef t_nodo_pila* t_pila;
 
 
 void crear_pila (t_pila  *dirPila);
@@ -25,7 +25,7 @@ void crear_pila (t_pila  *dirPila)
 
 int apilar ( t_pila * dirPila, char *cad)
 {
-    t_nodo  *nueNodo = (t_nodo *)malloc(sizeof(t_nodo ));
+    t_nodo_pila  *nueNodo = (t_nodo_pila *)malloc(sizeof(t_nodo_pila ));
     if( ! nueNodo )
     {
         return FALSE;
@@ -38,7 +38,7 @@ int apilar ( t_pila * dirPila, char *cad)
 
 int desapilar ( t_pila * dirPila, char* cad)
 {
-    t_nodo  *dirNodoElim;
+    t_nodo_pila  *dirNodoElim;
     if(*dirPila == NULL)
         return FALSE;
      strcpy(cad, (*dirPila)->cad);
