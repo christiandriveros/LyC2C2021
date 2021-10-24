@@ -4,12 +4,13 @@
 
 DIM [ var1, var2, svar3 ] AS [ FLOAT, INT, string]
 DIM [ svar ] AS [string]
+DIM [ var3, r ] AS [INT, INT]
 
 */PRUEBA TEMAS ESPECIALES: EQUMAX, EQUMIN, LONGITUD /*
 
 */ PRUEBA LONGITUD /*
 
-ab:=s:=d:=q:=we:=r := long ([x,y,z]) +3
+var1:=var2:=var3:= long ([x,y,z]) +3
 r := long ([x,y,z]) +3
 r := long ([x,y,z]) 
 
@@ -17,15 +18,15 @@ r := long ([x,y,z])
 
 IF( EQUMAX(10; [100, 111, var1] ) )
 THEN
-resultado:= "verdadero"
+svar3:= "verdadero"
 ENDIF
 
 
-IF( EQUMAX(10; [100, 111, var1] ) )
+IF( EQUMIN(10; [100, 111, var1] ) )
 THEN
-resultado:= "verdadero"
+svar3:= "verdadero"
 ELSE
-resultado:= "falso"
+svar3:= "falso"
 ENDIF
 
 
@@ -33,7 +34,7 @@ ENDIF
 
 
 WHILE ( 7 > -5 )
-a:=0
+var1:=0
 ENDWHILE
 
 */ PRUEBAS DECISIONES Y CONDICIONES/*
@@ -42,78 +43,78 @@ ENDWHILE
 
 IF (a <= 30)
 THEN
-b := "correcto" */ asignación string /*
+svar := "correcto" */ asignación string /*
 ENDIF
 
 
 IF ( 1 > 2 )
 THEN
-c:=3
+var2:=3
 ENDIF
 
 */IF CON ELSE/*
 
 IF ( 1 > 2 )
 THEN
-c:=4
+var1:=4
 ELSE
-d:= 5
+var2:= 5
 ENDIF
 
 */ CONDICIONES VARIAS /*
 
-IF ( var_a <= varb )
+IF ( var1 <= var2 )
 THEN
-var:=4
+var1:=4
 ENDIF
 
-IF ( var_a == varb )
+IF ( var1 == var2 )
 THEN
-var:=3
+var2:=3
 ENDIF
 
-IF ( var_a < varb )
+IF ( var1 < var2 )
 THEN
-var:=3
+var2:=3
 ENDIF
 
-IF ( var_a > varb )
+IF ( var2 > var1 )
 THEN
-var:=1
+var1:=1
 ENDIF
 
-IF ( var_a >= varb )
+IF ( var1 >= var2 )
 THEN
-var:=2
+var2:=2
 ENDIF
 
 
-IF ( var_a <> varb )
+IF ( var1 <> var2 )
 THEN
-var:=5
+var1:=5
 ENDIF
 
 */ PRUEBA COMPARACION DOBLE SIMPLE Y OPERADORES AND Y OR /*
 
-IF ( var_a > varb AND var_c<var_d )
+IF ( var1 > var2 AND var3<r )
 THEN
-var:=1
+var1:=1
 ENDIF
 
-IF ( var_a > varb OR var_c<var_d )
+IF ( var1 > var2 OR var3<r )
 THEN
-var:=2
+r:=2
 ENDIF
 
-IF ( NOT var_a > varb )
+IF ( NOT var1 > var2 )
 THEN
-var:=3
+r:=3
 ENDIF
 
 */ DESCOMENTAR PARA PROBAR ERROR HACIENDO TRIPLE COMPARACION /*
-*/IF ( var_a > varb AND var_c<var_d var_c==var_d )/*
+*/IF ( var1 > var2 AND var3<r var3==r )/*
 */THEN/*
-*/var:=4/*
+*/var2:=4/*
 */ENDIF/*
 
 
@@ -122,16 +123,16 @@ ENDIF
 */ PRUEBAS TIPOS DE DATO /*
 
 */ CONSTANTE NUMERICA ENTERA /*  
-var_numEnt:= 32767
+var1:= 32767
 
 */ DESCOMENTAR PARA PROBAR EXCESO EN EL LIMITE/*
-*/var_numEnt:= 32768 /*
+*/var2:= 32768 /*
 
 */ DESCOMENTAR PARA PROBAR EXCESO EN LONGITUD MAXIMA DE ID: 30/*
 */ abcdefghijklmnopqrstuvwxyz12344 := 8 /*
 
 */ CONSTANTE NUMERICA REALES /*
-
+DIM[var_numReal1, var_numReal2, var_numReal3] AS [FLOAT, FLOAT, FLOAT]
 var_numReal1:= -11.11
 var_numReal2:= 09.
 var_numReal3:= .90
@@ -141,10 +142,10 @@ var_numReal3:= .90
 
 */ PRUEBA CON STRING DE 30 CHAR /*
 
-var_string1 := "ur21v  .3A567@a(-,zjt 1xd%df g"
+svar3 := "ur21v  .3A567@a(-,zjt 1xd%df g"
 
 */ DESCOMENTAR PARA PROBAR ERROR DE ASIGNACION CON STRING DE 31 CARACTERES /*
-*/ var_string1:= "ur21v  .3A567@a(-,zjt 1xd%df g4"/*
+*/ svar3:= "ur21v  .3A567@a(-,zjt 1xd%df g4"/*
 
 
 */ PRUEBA DISPLAY Y GET/*
@@ -159,7 +160,7 @@ GET base
 
 */ PRUEBA ASIGNACION MULTIPLE /*
 
-var1:= var2:= varZ:= variable:= varR:= (10*55+2) 
+var1:= var2:= r:= var3:= (10*55+2) 
 
 
 */ PRUEBA DE CICLOS Y SELECCIONES ANIDADOS /*
@@ -167,10 +168,10 @@ var1:= var2:= varZ:= variable:= varR:= (10*55+2)
 IF( var1> var2)
 THEN
 	WHILE( var1 > 1)
-		var2:= varZ-2
-		IF( variable> 8)
+		var2:= var3-2
+		IF( r> 8)
 		THEN
-			varR:= varR-7
+			var2:= var1
 		ENDIF
 	ENDWHILE
 ENDIF

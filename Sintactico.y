@@ -4,7 +4,10 @@
 #include <conio.h>
 #include "pila.h"
 #include "lista.h"
+#include "pila_enteros.h"
 #include "coladinamica.h"
+#include "lista_inter.h"
+
 
 
 int yystopparser=0;
@@ -16,12 +19,13 @@ void crear_tabla_simbolos();
 void borrar_tabla_simbolos();
 
 /// FUNCIONES PARA CODIGO INTERMEDIO ///////
-void crear_archivo_para_codigo_intermedio();
 void insertar_en_polaca( char* cadena);
 void avanzar();
 void apilar_celda_actual();
 void desapilar_posicion( int *posicion );
-void escribir_en_celda(int pos, int valor);
+int crear_archivo_notacion_intermedia( t_lista_cod_inter *dirLista);
+void actualizar_celda( int numCelda, int contenidoNum );
+void apilar_celda_especifica ( int celda );
 
 
 /// LISTA DE TABLA DE SIMBOLOS ////////////
@@ -31,14 +35,21 @@ t_lista listaTS;
 ///DE TODO UN POCO  ///////
 int posicion_celda_actual=0;
 void encolar_id_para_tipificar (char *id);
+void encolar_id_para_longitud (char *id);
 void tipificar_ids_en_tabla_de_simbolos();
 void apilar_tipos_datos (char *dato);
+void contar_longitud ();
 
 
 
 /// PILAS PARA DECLARACION DE VARIABLES //////
 t_cola  cola_de_ids_declaracion; 
-t_pila  pila_de_tipos_declaracion; 
+t_cola  cola_de_ids_longitud; 
+t_pila  pila_de_tipos_declaracion;
+t_pila_ent pilaDeCeldas;
+t_lista_cod_inter listaIntermedio;
+int num_celda_actual=0;
+
 
 
 /// FUNCIONES PARA ASIGNACION ////////
@@ -154,12 +165,12 @@ dec_var:	DIM COR_A lista_simetrica COR_C				  	{ printf("\n<dec_var> -> DIM COR_
 ;
 
 lista_simetrica: ID COMA lista_simetrica COMA tipo_dato		{ printf("\n<lista_simetrica> -> ID COMA <lista_simetrica> COMA <tipo_dato> ");
-																//apilar_id_para_tipificar($1);		
+																	
 																encolar_id_para_tipificar($1);
 																}
 ;
 lista_simetrica: ID COR_C AS COR_A tipo_dato			{ printf("\n<lista_simetrica> -> ID COR_C AS COR_A <tipo_dato> "); 
-																//apilar_id_para_tipificar($1);
+															
 																encolar_id_para_tipificar($1);
 																}
 ;
@@ -212,13 +223,44 @@ condicional:		IF PA equ PC THEN programa ENDIF 						{ printf("\n<condicional> -
 condicional:		IF PA equ PC THEN programa ELSE  programa ENDIF 		{ printf("\n<condicional> -> IF( <equ> )THEN <programa> ELSE <programa> ENDIF "); }
 ;
 
-equ: EQUMAX PA expresion PYC COR_A lista_factores COR_C PC				{ printf("\n<equ> -> EQUMAX PA expresion PYC COR_A lista_factores COR_C PC"); }
-;
-equ: EQUMIN PA expresion PYC COR_A lista_factores COR_C PC				{ printf("\n<equ> -> EQUMIN PA expresion PYC COR_A lista_factores COR_C PC"); }
+equ: EQUMAX PA expresion PYC COR_A lista_factores_equmax COR_C PC				{ printf("\n<equ> -> EQUMAX PA expresion PYC COR_A lista_factores_equmax COR_C PC");
+int posDesap;
+insertar_en_polaca ("@max"); insertar_en_polaca ("@exp");
+insertar_en_polaca ("@CMP"); insertar_en_polaca ("BLE");apilar_celda_actual();avanzar();
+insertar_en_polaca ("equmax"); insertar_en_polaca ("TRUE");insertar_en_polaca(":=");
+desapilar_posicion( &posDesap );actualizar_celda(posDesap, num_celda_actual + 1);
+insertar_en_polaca ("equmax"); insertar_en_polaca ("FALSE");insertar_en_polaca(":=");} 
 ;
 
-lista_factores: equfactor									{ printf("\n<lista_factores> -> <equfactor> "); }
-				| lista_factores COMA equfactor				{ printf("\n<lista_factores> -> <lista_factores> COMA <equfactor> "); }
+equ: EQUMIN PA expresion PYC COR_A lista_factores_equmin COR_C PC				{ printf("\n<equ> -> EQUMIN PA expresion PYC COR_A 		lista_factores_equmin COR_C PC");
+		int posDesap;
+		insertar_en_polaca ("@min"); insertar_en_polaca ("@exp");
+		insertar_en_polaca ("@CMP"); insertar_en_polaca ("BGE");apilar_celda_actual();avanzar();
+		insertar_en_polaca ("equmin"); insertar_en_polaca ("TRUE");insertar_en_polaca(":=");
+		desapilar_posicion( &posDesap );actualizar_celda(posDesap, num_celda_actual + 1);
+		insertar_en_polaca ("equmin"); insertar_en_polaca ("FALSE");insertar_en_polaca(":=");}
+;
+
+lista_factores_equmin: equfactor									{ printf("\n<lista_factores_equmin> -> <equfactor> ");
+															insertar_en_polaca ("@min");
+															insertar_en_polaca(":=");}
+				| lista_factores_equmin COMA equfactor				{ printf("\n<lista_factores_equmin> -> <lista_factores_equmin> COMA <equfactor> "); int posDesap;
+				insertar_en_polaca ("@aux"); insertar_en_polaca(":=");  insertar_en_polaca ("@aux"); insertar_en_polaca ("@min");
+				insertar_en_polaca ("@CMP"); insertar_en_polaca ("BGE"); 
+				apilar_celda_actual();avanzar(); insertar_en_polaca ("@aux"); insertar_en_polaca ("@min");insertar_en_polaca(":="); 
+				desapilar_posicion( &posDesap );actualizar_celda(posDesap, num_celda_actual + 1);};
+				
+;
+
+lista_factores_equmax: equfactor									{ printf("\n<lista_factores_equmax> -> <equfactor> ");
+																	insertar_en_polaca ("@max");
+																	insertar_en_polaca(":=");}
+				| lista_factores_equmax COMA equfactor				{ printf("\n<lista_factores_equmax> -> <lista_factores_equmax> COMA <equfactor> "); int posDesap;
+				insertar_en_polaca ("@aux"); insertar_en_polaca(":=");  insertar_en_polaca ("@aux"); insertar_en_polaca ("@max");
+				insertar_en_polaca ("@CMP"); insertar_en_polaca ("BLE"); 
+				apilar_celda_actual();avanzar(); insertar_en_polaca ("@aux"); insertar_en_polaca ("@max");insertar_en_polaca(":="); 
+				desapilar_posicion( &posDesap );actualizar_celda(posDesap, num_celda_actual + 1);};
+				
 ;
 
 equfactor:		constante_num 									{ printf("\n<equfactor> -> <constante_num> "); }
@@ -289,7 +331,7 @@ comparador:		OP_MEN 											{ printf("\n<comparador> -> <");
 expresion:		expresion OP_SUM termino  						{ printf("\n<expresion> -> <expresion> + <termino>");insertar_en_polaca("+"); }
 				| expresion OP_RES termino 						{ printf("\n<expresion> -> <expresion> - <termino>");insertar_en_polaca("-"); }
 				| termino 										{ printf("\n<expresion> -> <termino>"); }
-				| LONG PA COR_A lista_id COR_C PC				{ printf("\n<expresion> -> LONG PA COR_A <lista_id> COR_C PC"); }
+				| LONG PA COR_A lista_id COR_C PC				{ printf("\n<expresion> -> LONG PA COR_A <lista_id> COR_C PC"); contar_longitud();}
 ;
 
 expresion: 		OP_RES expresion  %prec MENOS_UNARIO 			{ printf("\n<expresion> -> OP_RES <expresion>");
@@ -297,10 +339,10 @@ expresion: 		OP_RES expresion  %prec MENOS_UNARIO 			{ printf("\n<expresion> -> 
 																	insertar_en_polaca("*"); }
 ; 					
 
-lista_id: 	ID												{ printf("\n<lista_id> -> ID");insertar_en_polaca( yylval.str_val ); }
-			|lista_id COMA ID 								{ printf("\n<lista_id> -> lista_id COMA ID");insertar_en_polaca( yylval.str_val ); }
+lista_id: 	ID												{ printf("\n<lista_id> -> ID");insertar_en_polaca( yylval.str_val );}
+			|lista_id COMA ID 								{ printf("\n<lista_id> -> lista_id COMA ID");insertar_en_polaca( yylval.str_val ); encolar_id_para_longitud("id");}
 
-
+;
 termino:		termino OP_MULT factor 							{ printf("\n<termino> -> <termino> * <factor>"); insertar_en_polaca("*"); }
 				| termino OP_DIV factor 						{ printf("\n<termino> -> <termino> / <factor>");insertar_en_polaca("/"); }
 				| factor 										{ printf("\n<termino> -> <factor>"); }
@@ -341,46 +383,51 @@ void destruir_archivo_codigo_intermedio()
 
 void insertar_en_polaca( char* cadena)
 {
-	FILE * arch= fopen("intermedia.txt", "a" );
-	fprintf(arch, "%s ||", cadena);
-	fclose(arch);
+	insertar_en_lista_inter(&listaIntermedio, cadena);
+	num_celda_actual++;
 }
 
 //*****************************************
 void avanzar () 
 {
-	//// COMPLETAR	
+	insertar_en_polaca("");	
 }
 
 void apilar_celda_actual()
 {
-	////COMPLETAR
+	apilar_ent( &pilaDeCeldas , &num_celda_actual );
 }
+
 void desapilar_posicion( int *posicion )
 {
-	/// COMPLETAR
+	desapilar_ent( &pilaDeCeldas, posicion);
 }
 
-void escribir_en_celda(int pos, int valor)
+void actualizar_celda( int numCelda, int contenidoNum )
 {
-	////COMPLETAR
+	char contenido[20];
+	itoa(contenidoNum, contenido, 10);
+	actualizar_contenido_de_celda ( &listaIntermedio, numCelda, contenido );
 }
 
-//*********************************************
+
+void apilar_celda_especifica ( int celda )
+{
+	apilar_ent( &pilaDeCeldas , &celda );
+}
 
 /// FUNCIONALIDADES DE DECLARACION DE VARIABLES
-
-/*void apilar_id_para_tipificar (char *dato)
-{
-	apilar ( &pila_de_ids_declaracion, dato);
-}*/
 
 void encolar_id_para_tipificar (char *dato)
 {
 	encolar ( &cola_de_ids_declaracion, dato);
 }
 
-
+void encolar_id_para_longitud (char *dato)
+{
+	printf("encole en longitud");
+	encolar ( &cola_de_ids_longitud, dato);
+}
 
 void apilar_tipos_datos (char *dato)
 {
@@ -458,16 +505,37 @@ void realizar_asignacion()
 	}
 }
 
+void contar_longitud(){
+	printf("entre en la funcion\n");
+	int longitud = 1;
+	char slongitud [5];
+	char id[100];
+	while( ! colaVacia(&cola_de_ids_longitud) ){
+		printf("entre al while\n");
+		longitud++;
+		desacolar(&cola_de_ids_longitud, id );
+	}
+	printf("sali del while\n");
+	insertar_en_polaca("@longitud");
+	printf("TODO BIEN\n");
+	itoa(longitud, slongitud, 10);
+	insertar_en_polaca(slongitud);
+	printf("TODO MAL\n");
+	insertar_en_polaca(":=");
+}
+
 void inicializar_variables_y_archivos_de_compilacion()
 {
 	crear_lista(&listaTS);
     crear_archivo_para_codigo_intermedio();
 	crearCola (&cola_de_ids_declaracion);
+	crearCola (&cola_de_ids_longitud);
 	crear_pila (&pila_de_tipos_declaracion);
 	crearCola (&cola_de_ids_asig);
+	crear_lista_inter(&listaIntermedio);
+	crear_pila_ent( &pilaDeCeldas );
 
 }
-
 
 void imprimir_tabla_de_simbolos_en_archivo()
 {
@@ -482,11 +550,26 @@ void crear_tabla_simbolos()
 }
 
 
+
 void borrar_tabla_simbolos()
 {
 	remove("ts.txt");
 }
 
+int crear_archivo_notacion_intermedia( t_lista_cod_inter *dirLista)
+{
+	char buffer[100];
+	FILE * arch= fopen("intermedia.txt", "ab+" );
+	if( arch == NULL)
+		return FALSE;
+	while( ! lista_inter_vacia(dirLista) )
+	{
+		extraer_primero_de_lista_inter(dirLista, buffer);
+		fprintf(arch, "%s||", buffer );
+	}
+	fclose(arch);
+	return TRUE;
+}
 
 /// ERRORES 
 
@@ -520,6 +603,7 @@ int main (int argc, char *argv[])
 		crear_tabla_simbolos();
         yyparse();
 		imprimir_tabla_de_simbolos_en_archivo();
+		crear_archivo_notacion_intermedia(&listaIntermedio);
     }
     fclose(yyin);
     return 0;
