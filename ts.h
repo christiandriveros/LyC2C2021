@@ -10,10 +10,7 @@
 #define LEXEMA_YA_ESTABA_DECLARADO 2
 #define LEXEMA_NO_ENCONTRADO 0
 
-void inicializar_tab_simb(FILE *fp)
-{
-    fprintf(fp, "%s||%s||%s||%s\n", "NOMBRE", "TIPO", "VALOR", "LONGITUD");
-}
+
 
 void guardar_en_tab_simb(char *text, char *type, char *value, char *length)
 {
@@ -62,11 +59,6 @@ void incluir_lexema_en_tab_simb(char *text, char *type, char *value, char *lengt
 	{
 		guardar_en_tab_simb(text,type,value,length);
 	}
-}
-
-void destruir_tab_simb()
-{
-	remove("ts.txt");
 }
 	
 #endif // TS_H_INCLUDED

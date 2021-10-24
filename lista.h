@@ -7,6 +7,7 @@
 #define LEXEMA_YA_DECLARADO 5
 #define LEXEMA_NO_ENCONTRADO 6
 #define CAMPO_VACIO ""
+
 typedef struct{
 char nombre[100];
 char tipo[100];
