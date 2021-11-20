@@ -2,10 +2,11 @@
 Tp Compilador - 2° Entrega 
 
 Integrantes:
-Bonini Bianca
-Parra Martin
-Pereira Matias
-Riveros Christian
+•Bonini Bianca
+•Caceres Silvina
+•Parra Martin
+•Pereira Matias
+•Riveros Christian
 
 Instrucciones:
 1) "1 Genera EXE" (Genera el compilador)

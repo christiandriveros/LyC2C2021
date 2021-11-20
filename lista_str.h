@@ -6,7 +6,7 @@
 
 typedef struct s_nodo_l_str{
 char cadena[100];
-char tipo[30];
+char tipo [20];
 struct s_nodo_l_str *sig;
 }t_nodo_l_str;
 
@@ -39,18 +39,6 @@ int insertar_en_lista_inter (t_lista_cod_inter *dirLista, char *cadena, char* ti
 
 }
 
-/*int extraer_primero_de_lista_inter ( t_lista_cod_inter *dirLista, char *cadena )
-{
-    t_nodo_l_str* nodoElim;
-    if( *dirLista == NULL )
-        return FALSE;
-
-    strcpy(cadena, (*dirLista)->cadena);
-    nodoElim= *dirLista;
-    *dirLista= (*dirLista)->sig;
-    free(nodoElim);
-    return TRUE;
-}*/
 int extraer_primero_de_lista_inter ( t_lista_cod_inter *dirLista, char *cadena, char *tipo )
 {
     t_nodo_l_str* nodoElim;
@@ -93,6 +81,22 @@ int lista_inter_vacia(t_lista_cod_inter *dirLista)
     if( *dirLista == NULL)
         return TRUE;
     return FALSE;
+}
+
+int crear_archivo_notacion_intermedia( t_lista_cod_inter *dirLista)
+{
+    char buffer[100];
+    FILE* pf= fopen("intermedia.txt", "w+");
+    char tipo[30];
+    if( pf == NULL)
+        return FALSE;
+    while( ! lista_inter_vacia(dirLista) )
+    {
+        extraer_primero_de_lista_inter(dirLista, buffer, tipo );
+        fprintf(pf, "%s||", buffer );
+    }
+    fclose(pf);
+    return TRUE;
 }
 
 void duplicar_lista_cod_intermedio( t_lista_cod_inter *dirListaOrig, t_lista_cod_inter *dirListaDuplicado )

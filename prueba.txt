@@ -3,6 +3,7 @@
 
 
 DIM [ var1, var2, svar3 ] AS [ FLOAT, INT, string]
+DIM [ x,y,z ] AS [ INT, INT, INT]
 DIM [ svar ] AS [string]
 DIM [ var3, r ] AS [INT, INT]
 
@@ -10,19 +11,19 @@ DIM [ var3, r ] AS [INT, INT]
 
 */ PRUEBA LONGITUD /*
 
-var1:=var2:=var3:= long ([x,y,z]) +3
-r := long ([x,y,z]) +3
+var1:=var2:=var3:= long ([x,y,z])
+r := long ([x,y,z])
 r := long ([x,y,z]) 
 
 */ PRUEBA EQUMAX Y EQUMIN/*
 
-IF( EQUMAX(10; [100, 111, var1] ) )
+IF( EQUMAX(10; [100, 111, var2] ) )
 THEN
 svar3:= "verdadero"
 ENDIF
 
 
-IF( EQUMIN(10; [100, 111, var1] ) )
+IF( EQUMIN(10; [100, 111, var2] ) )
 THEN
 svar3:= "verdadero"
 ELSE
@@ -33,7 +34,7 @@ ENDIF
 */ PRUEBAS ITERACIONES /*
 
 
-WHILE ( 7 > -5 )
+WHILE ( 7 > 5 )
 var1:=0
 ENDWHILE
 
@@ -41,7 +42,7 @@ ENDWHILE
 
 */IF/*
 
-IF (a <= 30)
+IF (var2 <= 30)
 THEN
 svar := "correcto" */ asignación string /*
 ENDIF
@@ -63,56 +64,56 @@ ENDIF
 
 */ CONDICIONES VARIAS /*
 
-IF ( var1 <= var2 )
+IF ( var2 <= var2 )
 THEN
 var1:=4
 ENDIF
 
-IF ( var1 == var2 )
+IF ( x == y )
 THEN
 var2:=3
 ENDIF
 
-IF ( var1 < var2 )
+IF ( y < z )
 THEN
 var2:=3
 ENDIF
 
-IF ( var2 > var1 )
+IF ( var2 > z )
 THEN
 var1:=1
 ENDIF
 
-IF ( var1 >= var2 )
+IF ( x >= var2 )
 THEN
 var2:=2
 ENDIF
 
 
-IF ( var1 <> var2 )
+IF ( y <> var2 )
 THEN
 var1:=5
 ENDIF
 
 */ PRUEBA COMPARACION DOBLE SIMPLE Y OPERADORES AND Y OR /*
 
-IF ( var1 > var2 AND var3<r )
+IF ( y > var2 AND var3<r )
 THEN
 var1:=1
 ENDIF
 
-IF ( var1 > var2 OR var3<r )
+IF ( z > var2 OR var3<r )
 THEN
 r:=2
 ENDIF
 
-IF ( NOT var1 > var2 )
+IF ( NOT z > var2 )
 THEN
 r:=3
 ENDIF
 
 */ DESCOMENTAR PARA PROBAR ERROR HACIENDO TRIPLE COMPARACION /*
-*/IF ( var1 > var2 AND var3<r var3==r )/*
+*/IF ( z > var2 AND var3<r var3==r )/*
 */THEN/*
 */var2:=4/*
 */ENDIF/*
@@ -133,7 +134,7 @@ var1:= 32767
 
 */ CONSTANTE NUMERICA REALES /*
 DIM[var_numReal1, var_numReal2, var_numReal3] AS [FLOAT, FLOAT, FLOAT]
-var_numReal1:= -11.11
+var_numReal1:= 11.11
 var_numReal2:= 09.
 var_numReal3:= .90
 
@@ -152,10 +153,7 @@ svar3 := "ur21v  .3A567@a(-,zjt 1xd%df g"
 
 DISPLAY "ewr"
 DISPLAY var1
-GET base
-
-
-
+GET var1
 
 
 */ PRUEBA ASIGNACION MULTIPLE /*
@@ -165,9 +163,9 @@ var1:= var2:= r:= var3:= (10*55+2)
 
 */ PRUEBA DE CICLOS Y SELECCIONES ANIDADOS /*
 
-IF( var1> var2)
+IF( var2> z)
 THEN
-	WHILE( var1 > 1)
+	WHILE( var2 > 1)
 		var2:= var3-2
 		IF( r> 8)
 		THEN
