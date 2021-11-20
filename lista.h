@@ -138,4 +138,14 @@ int volcar_lista_a_tabla_de_simbolos(t_lista *dirLista)
     return TRUE;
 }
 
+void duplicar_lista_ts( t_lista *dirListaOriginal, t_lista *dirListaDuplicado )
+{
+    crear_lista(dirListaDuplicado);
+    while(*dirListaOriginal != NULL)
+    {
+        insertar_en_lista(dirListaDuplicado, &((*dirListaOriginal)->lex) );
+        dirListaOriginal= &((*dirListaOriginal)->sig);
+    }
+}
+
 #endif // LISTA_H_INCLUDED

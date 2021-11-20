@@ -198,7 +198,7 @@ COR_C				"]"
 					else
 					{
 						itoa(longitud_string, cad_long, base);
-						agregar_lexema(yytext , "" ,yytext , cad_long);
+						agregar_lexema(yytext , "string" ,yytext , cad_long);
 						strcpy(yylval.str_val, yytext);
 						return CTE_STRING;
 					}

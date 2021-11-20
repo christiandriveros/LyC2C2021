@@ -1,1 +1,1 @@
-Segunda.exe prueba.txt
+Grupo18.exe prueba.txt

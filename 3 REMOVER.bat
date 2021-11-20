@@ -4,4 +4,5 @@ del /f "y.tab.c"
 del /f "y.tab.h"
 del /f "ts.txt"
 del /f "intermedia.txt"
-del /f Segunda.exe
+del /f Grupo18.exe
+del /f "Final.asm"
