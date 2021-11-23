@@ -1,5 +1,5 @@
 # LyC2C2021
-Tp Compilador - 2° Entrega 
+Tp Compilador - Entrega Final 
 
 Integrantes:
 •Bonini Bianca
