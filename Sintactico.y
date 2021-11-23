@@ -315,8 +315,7 @@ tipo_dato: T_INT 														{ printf("\n<tipo_dato> -> T_INT"); apilar_tipos_
 ;
 
 
-asignacion:		lista_de_asignaciones OP_ASIG expresion 					{printf("\n<asignacion> -> <lista_de_asignaciones> OP_ASIG <expresion>"); 
-																			//insertar_en_polaca("@aux_asig", TIPO_STRING);}	
+asignacion:		lista_de_asignaciones OP_ASIG expresion 					{printf("\n<asignacion> -> <lista_de_asignaciones> OP_ASIG <expresion>"); 	
 																			generarNuevoAuxiliar( "@aux_asig" );
 																			insertar_auxiliar_en_ts(ultimoAuxiliarGenerado, TIPO_ENTERO);
 																			insertar_en_polaca(ultimoAuxiliarGenerado, TIPO_ENTERO);		
@@ -325,6 +324,7 @@ asignacion:		lista_de_asignaciones OP_ASIG expresion 					{printf("\n<asignacion
 																			realizar_asignacion();
 																			}
 ;
+
 
 asignacion:		lista_de_asignaciones OP_ASIG CTE_STRING 								
 																			{ printf("\n<asignacion> --> <lista_de_asignaciones> OP_ASIG <CONST_STRING>");
@@ -630,7 +630,7 @@ termino:		termino OP_MULT factor 							{ printf("\n<termino> -> <termino> * <fa
 ;
 
 factor:			PA expresion PC  								{ printf("\n<factor> -> ( <expresion> )"); }
-				| constante 									{ printf("\n<factor> -> constante "); }
+				| constante_num 									{ printf("\n<factor> -> constante_num "); }
 				| ID 											{ printf("\n<factor> -> ID ");						   					
 																guardar_tipo_de_dato_id_para_tipo_expresion_e_insertar_en_polaca( yylval.str_val ); }
 				
